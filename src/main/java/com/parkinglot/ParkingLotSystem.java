@@ -4,10 +4,11 @@ import com.parkinglotexception.ParkingLotException;
 
 public class ParkingLotSystem {
 
+    private Object vehicleType;
     private final int totalSlotCapacity;
     private int currentSlotCapacity;
     private ParkingLotOwner parkingLotOwner;
-    private Object vehicleType;
+    private SecurityPerson securityPerson;
 
     public ParkingLotSystem(Integer slotCapacity) {
         this.totalSlotCapacity = slotCapacity;
@@ -23,6 +24,7 @@ public class ParkingLotSystem {
     public boolean checkIfVehicleIsParked() {
         if (this.totalSlotCapacity == this.currentSlotCapacity) {
             this.parkingLotOwner.slotsFull();
+            this.securityPerson.slotsFull();
             throw new ParkingLotException("Vehicle not parked", ParkingLotException.ExceptionType.SLOT_FULL);
         }
         return true;
@@ -43,5 +45,9 @@ public class ParkingLotSystem {
 
     public void registerLotOwner(ParkingLotOwner parkingLotOwner) {
         this.parkingLotOwner = parkingLotOwner;
+    }
+
+    public void registerSecurityPerson(SecurityPerson securityPerson) {
+        this.securityPerson = securityPerson;
     }
 }
