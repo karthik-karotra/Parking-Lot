@@ -12,13 +12,21 @@ public class TestParkingLot {
     @BeforeClass
     public static void setUp() throws Exception {
         parkingLotSystem = new ParkingLotSystem();
-        vehicleType=new Object();
+        vehicleType = new Object();
     }
 
     @Test
     public void givenInitiallyAVehicle_WantsToPark_ShouldReturnTrue() {
-        parkingLotSystem.getParked(new Object());
+        parkingLotSystem.parkVehicle(vehicleType);
         boolean checkIfVehicleIsParked = parkingLotSystem.checkIfVehicleIsParked();
         Assert.assertTrue(checkIfVehicleIsParked);
+    }
+
+    @Test
+    public void givenInitiallyAParkedVehicle_WantsToUnPark_ShouldReturnTrue() {
+        parkingLotSystem.parkVehicle(vehicleType);
+        parkingLotSystem.unparkVehicle(vehicleType);
+        boolean checkIfVehicleIsUnParked = parkingLotSystem.checkIfVehicleIsUnParked();
+        Assert.assertTrue(checkIfVehicleIsUnParked);
     }
 }
