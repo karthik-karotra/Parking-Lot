@@ -2,17 +2,20 @@ package com.parkinglot;
 
 import com.parkinglotexception.ParkingLotException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ParkingLotSystem {
 
     private Object vehicleType;
     private final int totalSlotCapacity;
     private int currentSlotCapacity;
-    private ParkingLotOwner parkingLotOwner;
-    private SecurityPerson securityPerson;
+    private List<ParkingLotObservers> observersList;
 
     public ParkingLotSystem(Integer slotCapacity) {
         this.totalSlotCapacity = slotCapacity;
         this.currentSlotCapacity = 0;
+        this.observersList = new ArrayList<>();
     }
 
 
@@ -23,8 +26,8 @@ public class ParkingLotSystem {
 
     public boolean checkIfVehicleIsParked() {
         if (this.totalSlotCapacity == this.currentSlotCapacity) {
-            this.parkingLotOwner.slotsFull();
-            this.securityPerson.slotsFull();
+            for (ParkingLotObservers observer : observersList)
+                observer.slotsFull();
             throw new ParkingLotException("Vehicle not parked", ParkingLotException.ExceptionType.SLOT_FULL);
         }
         return true;
@@ -43,11 +46,7 @@ public class ParkingLotSystem {
         throw new ParkingLotException("Vehicle not unparked", ParkingLotException.ExceptionType.VEHICLE_NOT_UNPARKED);
     }
 
-    public void registerLotOwner(ParkingLotOwner parkingLotOwner) {
-        this.parkingLotOwner = parkingLotOwner;
-    }
-
-    public void registerSecurityPerson(SecurityPerson securityPerson) {
-        this.securityPerson = securityPerson;
+    public void registerObserver(ParkingLotObservers observer) {
+        observersList.add(observer);
     }
 }
