@@ -41,8 +41,11 @@ public class ParkingLotSystem {
     }
 
     public boolean checkIfVehicleIsUnParked() {
-        if (this.vehicleType == null)
+        if (this.vehicleType == null) {
+            for(ParkingLotObservers observer:observersList)
+                observer.slotsEmpty();
             return true;
+        }
         throw new ParkingLotException("Vehicle not unparked", ParkingLotException.ExceptionType.VEHICLE_NOT_UNPARKED);
     }
 

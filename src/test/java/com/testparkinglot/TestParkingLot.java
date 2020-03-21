@@ -93,4 +93,28 @@ public class TestParkingLot {
             Assert.assertEquals(ParkingLotException.ExceptionType.SLOT_FULL, ex.type);
         }
     }
+
+    @Test
+    public void givenAParkingLot_WhenEmpty_ShouldInformTheOwner() {
+        parkingLotSystem.registerObserver(parkingLotOwner);
+        parkingLotSystem.parkVehicle(vehicleType);
+        parkingLotSystem.unparkVehicle(vehicleType);
+        try {
+            parkingLotSystem.checkIfVehicleIsParked();
+        } catch (ParkingLotException ex) {
+            Assert.assertFalse(parkingLotOwner.checkIfSlotIsFull());
+        }
+    }
+
+    @Test
+    public void givenAParkingLot_WhenEmpty_ShouldInformTheSecurityPerson() {
+        parkingLotSystem.registerObserver(securityPerson);
+        parkingLotSystem.parkVehicle(vehicleType);
+        parkingLotSystem.unparkVehicle(vehicleType);
+        try {
+            parkingLotSystem.checkIfVehicleIsParked();
+        } catch (ParkingLotException ex) {
+            Assert.assertFalse(securityPerson.checkIfSlotIsFull());
+        }
+    }
 }

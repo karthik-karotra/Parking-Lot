@@ -9,6 +9,11 @@ public class ParkingLotOwner implements ParkingLotObservers {
     }
 
     @Override
+    public void slotsEmpty() {
+        this.slotsFull=false;
+    }
+
+    @Override
     public boolean checkIfSlotIsFull() {
         return slotsFull;
     }
