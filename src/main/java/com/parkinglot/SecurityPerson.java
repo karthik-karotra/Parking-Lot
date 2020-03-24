@@ -1,6 +1,7 @@
 package com.parkinglot;
 
 public class SecurityPerson implements ParkingLotObservers {
+
     private boolean slotsFull;
 
     @Override
@@ -10,7 +11,7 @@ public class SecurityPerson implements ParkingLotObservers {
 
     @Override
     public void slotsEmpty() {
-        this.slotsFull=false;
+        this.slotsFull = false;
     }
 
     @Override
