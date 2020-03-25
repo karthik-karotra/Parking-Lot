@@ -1,6 +1,7 @@
 package com.testparkinglot;
 
 import com.parkinglot.*;
+import com.parkinglotexception.ParkingLotException.ExceptionType;
 import com.parkinglotexception.ParkingLotException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -188,17 +189,37 @@ public class TestParkingLot {
 
     @Test
     public void givenMultipleParkingLots_WhenWantToPark_ShouldParkVehicleAnd_ReturnLotNumber() {
-        lotManagementSystem.parkVehicle(vehicle);
-        lotManagementSystem.parkVehicle(vehicle1);
+        lotManagementSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
+        lotManagementSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle1);
         ParkingLotSystem assignedLot = lotManagementSystem.getLotOfParkedVehicle(vehicle1);
-        Assert.assertEquals(lotManagementSystem.parkingLot.get(1), assignedLot);
+        Assert.assertEquals(lotManagementSystem.parkingLot.get(0), assignedLot);
     }
 
     @Test
     public void givenMultipleParkingLots_WhenWantToPark_ButCouldNotPark_ShouldReturnNull() {
-        lotManagementSystem.parkVehicle(vehicle);
-        // lotManagementSystem.parkVehicle(vehicle1);
+        lotManagementSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle);
         ParkingLotSystem assignedLot = lotManagementSystem.getLotOfParkedVehicle(vehicle1);
         Assert.assertEquals(null, assignedLot);
+    }
+
+    @Test
+    public void givenAHandicapedDriver_WhenWantToPark_ShouldReturnNearestLot() {
+        lotManagementSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle1);
+        lotManagementSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle);
+        ParkingLotSystem assignedLot = lotManagementSystem.getLotOfParkedVehicle(vehicle);
+        Assert.assertEquals(lotManagementSystem.parkingLot.get(0), assignedLot);
+    }
+
+    @Test
+    public void givenAHandicapedDriver_WhenWantToPark_ButLotsAreFull_ShouldThrowException() {
+        try {
+            lotManagementSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
+            lotManagementSystem.parkVehicle(DriverType.NORMAL_DRIVER, new Object());
+            lotManagementSystem.parkVehicle(DriverType.NORMAL_DRIVER, new Object());
+            lotManagementSystem.parkVehicle(DriverType.NORMAL_DRIVER, new Object());
+            lotManagementSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle1);
+        } catch (ParkingLotException ex) {
+            Assert.assertEquals(ExceptionType.LOTS_FULL, ex.type);
+        }
     }
 }

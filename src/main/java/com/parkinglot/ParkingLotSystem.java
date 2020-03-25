@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class ParkingLotSystem {
+
     private Integer totalSlotCapacity;
     private List<ParkingLotObservers> observersList;
     private List<Slots> slots;
@@ -27,6 +28,9 @@ public class ParkingLotSystem {
 
     public void parkVehicle(Object vehicle) {
         List<Integer> availableEmptySlots = getAvailableEmptySlots();
+        if (availableEmptySlots.size() == 0) {
+            throw new ParkingLotException("Slots full", ExceptionType.SLOT_FULL);
+        }
         this.slots.get(availableEmptySlots.get(0)).setParkingTimeOfVehicle(vehicle);
         noOfVehicles++;
     }
@@ -34,7 +38,6 @@ public class ParkingLotSystem {
     public void parkVehicle(Integer slot, Object vehicle) {
         this.slots.get(slot).setParkingTimeOfVehicle(vehicle);
         noOfVehicles++;
-
     }
 
     public boolean checkIfVehicleIsParked(Object vehicle) {
@@ -77,15 +80,18 @@ public class ParkingLotSystem {
     }
 
     public List<Integer> getAvailableEmptySlots() {
+
         List<Integer> unOccupiedSlotList = new ArrayList();
-        IntStream.range(0, totalSlotCapacity)
-                .filter(slotIndex -> this.slots.get(slotIndex).getVehicle() == null)
-                .forEach(slotIndex -> unOccupiedSlotList.add(slotIndex));
-        if (unOccupiedSlotList.size() == 0) {
-            for (ParkingLotObservers observer : observersList)
-                observer.slotsFull();
-            throw new ParkingLotException("Slots are full", ExceptionType.SLOT_FULL);
-        }
+        try {
+            IntStream.range(0, totalSlotCapacity)
+                    .filter(slotIndex -> this.slots.get(slotIndex).getVehicle() == null)
+                    .forEach(slotIndex -> unOccupiedSlotList.add(slotIndex));
+            if (unOccupiedSlotList.size() == 0) {
+                for (ParkingLotObservers observer : observersList)
+                    observer.slotsFull();
+                throw new ParkingLotException("Slots are full", ExceptionType.LOTS_FULL);
+            }
+        } catch (ParkingLotException e) { }
         return unOccupiedSlotList;
     }
 
