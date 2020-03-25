@@ -8,14 +8,16 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class ParkingLotSystem {
-    private int totalSlotCapacity;
+    private Integer totalSlotCapacity;
     private List<ParkingLotObservers> observersList;
-    public List<Slots> slots;
+    private List<Slots> slots;
+    private Integer noOfVehicles = 0;
 
     public ParkingLotSystem(Integer slotCapacity) {
         this.totalSlotCapacity = slotCapacity;
         this.observersList = new ArrayList<>();
         this.slots = new ArrayList<>();
+        this.initializingSlots();
     }
 
     public void initializingSlots() {
@@ -26,21 +28,19 @@ public class ParkingLotSystem {
     public void parkVehicle(Object vehicle) {
         List<Integer> availableEmptySlots = getAvailableEmptySlots();
         this.slots.get(availableEmptySlots.get(0)).setParkingTimeOfVehicle(vehicle);
+        noOfVehicles++;
     }
 
     public void parkVehicle(Integer slot, Object vehicle) {
-        try {
-            this.slots.get(slot).setParkingTimeOfVehicle(vehicle);
-        } catch (IndexOutOfBoundsException ex) {
-            throw new ParkingLotException("Slot unavailable", ExceptionType.SLOT_FULL);
-        }
+        this.slots.get(slot).setParkingTimeOfVehicle(vehicle);
+        noOfVehicles++;
 
     }
 
     public boolean checkIfVehicleIsParked(Object vehicle) {
         try {
             boolean whetherParked = this.slots.stream()
-                    .anyMatch(slot -> slot.getVehicle().equals(vehicle));
+                    .anyMatch(slot -> vehicle.equals(slot.getVehicle()));
             return whetherParked;
         } catch (NullPointerException ex) {
             throw new ParkingLotException("Vehicle not parked", ExceptionType.VEHICLE_NOT_PARKED);
@@ -49,12 +49,13 @@ public class ParkingLotSystem {
 
     public void unparkVehicle(Object vehicle) {
         Slots slots = this.slots.stream()
-                .filter(slot -> slot.getVehicle().equals(vehicle))
+                .filter(slot -> vehicle.equals(slot.getVehicle()))
                 .findFirst()
-                .orElseThrow(() -> new ParkingLotException("Vehicle not found", ExceptionType.VEHICLE_NOT_FOUND));
+                .orElseThrow(() -> new ParkingLotException("Vehicle not found", ExceptionType.VEHICLE_NOT_UNPARKED));
         slots.setParkingTimeOfVehicle(null);
         for (ParkingLotObservers observer : observersList)
             observer.slotsEmpty();
+        noOfVehicles--;
     }
 
     public boolean checkIfVehicleIsUnParked(Object vehicle) {
@@ -64,7 +65,7 @@ public class ParkingLotSystem {
                 .isPresent();
         if (!isPresent)
             return true;
-        throw new ParkingLotException("Vehicle not unparked", ExceptionType.VEHICLE_NOT_UNPARKED);
+        throw new ParkingLotException("Vehicle not unparked", ExceptionType.VEHICLE_NOT_FOUND);
     }
 
     public void registerObserver(ParkingLotObservers observer) {
@@ -94,6 +95,10 @@ public class ParkingLotSystem {
                 .findFirst()
                 .orElseThrow(() -> new ParkingLotException("Vehicle not found", ExceptionType.VEHICLE_NOT_FOUND));
         return slots.getSlotNumber();
+    }
+
+    public Integer getCountOfVehiclesParked() {
+        return this.noOfVehicles;
     }
 
     public LocalDateTime getParkingTimeOfVehicle(Object vehicle) {

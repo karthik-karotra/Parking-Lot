@@ -1,9 +1,6 @@
 package com.testparkinglot;
 
-import com.parkinglot.ParkingLotObservers;
-import com.parkinglot.ParkingLotOwner;
-import com.parkinglot.ParkingLotSystem;
-import com.parkinglot.SecurityPerson;
+import com.parkinglot.*;
 import com.parkinglotexception.ParkingLotException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,6 +14,7 @@ public class TestParkingLot {
     private static Object vehicle, vehicle1;
     private ParkingLotObservers parkingLotOwner;
     private ParkingLotObservers securityPerson;
+    private LotManagementSystem lotManagementSystem;
 
     @Before
     public void setUp() {
@@ -26,6 +24,7 @@ public class TestParkingLot {
         parkingLotOwner = new ParkingLotOwner();
         securityPerson = new SecurityPerson();
         parkingLotSystem.initializingSlots();
+        lotManagementSystem = new LotManagementSystem(2, 2);
     }
 
     @Test
@@ -60,7 +59,7 @@ public class TestParkingLot {
             parkingLotSystem.unparkVehicle(vehicle1);
             boolean checkIfVehicleIsUnParked = parkingLotSystem.checkIfVehicleIsUnParked(vehicle);
         } catch (ParkingLotException ex) {
-            Assert.assertEquals(ParkingLotException.ExceptionType.VEHICLE_NOT_FOUND, ex.type);
+            Assert.assertEquals(ParkingLotException.ExceptionType.VEHICLE_NOT_UNPARKED, ex.type);
         }
     }
 
@@ -185,5 +184,21 @@ public class TestParkingLot {
         parkingLotSystem.parkVehicle(vehicle);
         LocalDateTime parkingTime = parkingLotSystem.getParkingTimeOfVehicle(vehicle);
         Assert.assertEquals(LocalDateTime.now().getMinute(), parkingTime.getMinute());
+    }
+
+    @Test
+    public void givenMultipleParkingLots_WhenWantToPark_ShouldParkVehicleAnd_ReturnLotNumber() {
+        lotManagementSystem.parkVehicle(vehicle);
+        lotManagementSystem.parkVehicle(vehicle1);
+        ParkingLotSystem assignedLot = lotManagementSystem.getLotOfParkedVehicle(vehicle1);
+        Assert.assertEquals(lotManagementSystem.parkingLot.get(1), assignedLot);
+    }
+
+    @Test
+    public void givenMultipleParkingLots_WhenWantToPark_ButCouldNotPark_ShouldReturnNull() {
+        lotManagementSystem.parkVehicle(vehicle);
+        // lotManagementSystem.parkVehicle(vehicle1);
+        ParkingLotSystem assignedLot = lotManagementSystem.getLotOfParkedVehicle(vehicle1);
+        Assert.assertEquals(null, assignedLot);
     }
 }
