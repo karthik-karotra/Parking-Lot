@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TestParkingLot {
     private static ParkingLotSystem parkingLotSystem;
-    private static Object vehicle, vehicle1;
+    private static Object vehicle, vehicle1, vehicle2;
     private ParkingLotObservers parkingLotOwner;
     private ParkingLotObservers securityPerson;
     private LotManagementSystem lotManagementSystem;
@@ -22,6 +22,7 @@ public class TestParkingLot {
         parkingLotSystem = new ParkingLotSystem(1);
         vehicle = new Object();
         vehicle1 = new Object();
+        vehicle2 = new Object();
         parkingLotOwner = new ParkingLotOwner();
         securityPerson = new SecurityPerson();
         parkingLotSystem.initializingSlots();
@@ -191,8 +192,9 @@ public class TestParkingLot {
     public void givenMultipleParkingLots_WhenWantToPark_ShouldParkVehicleAnd_ReturnLotNumber() {
         lotManagementSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
         lotManagementSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle1);
-        ParkingLotSystem assignedLot = lotManagementSystem.getLotOfParkedVehicle(vehicle1);
-        Assert.assertEquals(lotManagementSystem.parkingLot.get(0), assignedLot);
+        lotManagementSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle2);
+        ParkingLotSystem assignedLot = lotManagementSystem.getLotOfParkedVehicle(vehicle2);
+        Assert.assertEquals(lotManagementSystem.parkingLot.get(1), assignedLot);
     }
 
     @Test

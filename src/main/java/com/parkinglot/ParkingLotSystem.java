@@ -91,7 +91,8 @@ public class ParkingLotSystem {
                     observer.slotsFull();
                 throw new ParkingLotException("Slots are full", ExceptionType.LOTS_FULL);
             }
-        } catch (ParkingLotException e) { }
+        } catch (ParkingLotException e) {
+        }
         return unOccupiedSlotList;
     }
 
