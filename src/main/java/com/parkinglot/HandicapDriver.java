@@ -6,10 +6,10 @@ import java.util.List;
 public class HandicapDriver implements ParkingStrategy {
 
     @Override
-    public ParkingLotSystem getLot(List<ParkingLotSystem> parkingLot) {
-        ParkingLotSystem parkingLots = parkingLot.stream()
+    public ParkingLot getLot(List<ParkingLot> parkingLot) {
+        ParkingLot parkingLots = parkingLot.stream()
                 .filter(lot -> lot.getAvailableEmptySlots().size() > 0)
-                .findFirst()
+                .findAny()
                 .orElseThrow(() -> new ParkingLotException("Lots full", ParkingLotException.ExceptionType.LOTS_FULL));
         return parkingLots;
     }
