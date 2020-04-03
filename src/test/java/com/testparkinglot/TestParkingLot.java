@@ -346,4 +346,28 @@ public class TestParkingLot {
         List<List<String>> overallListOfBlueColoredToyotaCarsInDifferentLots = parkingLotSystem.getDetailsOfHandicapeDriverVehiclesInAllLots("Handicape");
         Assert.assertEquals(temporaryLot1, overallListOfBlueColoredToyotaCarsInDifferentLots.get(0));
     }
+
+    @Test
+    public void givenMultipleCarsToPark_ShouldReturnInformationOfAllCars() {
+        List<String> temporaryLot1 = new ArrayList();
+        temporaryLot1.add("Slot Number is 0, Number Plate MH 46 KA 5421, Vehicle Name Toyota, Color Blue, Driver Type Normal");
+        temporaryLot1.add("Slot Number is 1, Number Plate MH 47 DE 4158, Vehicle Name Scorpio, Color White, Driver Type Handicape");
+        temporaryLot1.add("Slot Number is 2, Number Plate MH 49 DY 8458, Vehicle Name Scorpio, Color White, Driver Type Handicape");
+        List<String> temporaryLot2 = new ArrayList();
+        temporaryLot2.add("Slot Number is 0, Number Plate MH 43 HE 4858, Vehicle Name Toyoya, Color Red, Driver Type Normal");
+        List<List<String>> temporaryListOfDetailsOfAllCars = new ArrayList();
+        temporaryListOfDetailsOfAllCars.add(new ArrayList(temporaryLot1));
+        temporaryListOfDetailsOfAllCars.add(new ArrayList(temporaryLot2));
+        Vehicle vehicle4 = new Vehicle("Blue", "Toyota", "MH 46 KA 5421", "Normal");
+        Vehicle vehicle5 = new Vehicle("White", "Scorpio", "MH 47 DE 4158", "Handicape");
+        Vehicle vehicle6 = new Vehicle("Red", "Toyoya", "MH 43 HE 4858", "Normal");
+        Vehicle vehicle7 = new Vehicle("White", "Scorpio", "MH 49 DY 8458", "Handicape");
+        parkingLotSystem = new ParkingLotSystem(5, 2);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle4);
+        parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle5);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle6);
+        parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle7);
+        List<List<String>> overallListOfBlueColoredToyotaCarsInDifferentLots = parkingLotSystem.getDetailsOfAllVehiclesInAllLots();
+        Assert.assertEquals(temporaryListOfDetailsOfAllCars, overallListOfBlueColoredToyotaCarsInDifferentLots);
+    }
 }

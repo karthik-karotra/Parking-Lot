@@ -10,4 +10,5 @@ public interface ParkingLotSystemDao {
     List<List<String>> getOverallListOfBMWCarsInDfferentLots(String vehicleName);
     List<List<Vehicle>> getListOfAllCarsParkedInLastThirtyMinutesInAllLots();
     List<List<String>> getDetailsOfHandicapeDriverVehiclesInAllLots(String driverType);
+    List<List<String>> getDetailsOfAllVehiclesInAllLots();
 }

@@ -180,4 +180,13 @@ public class ParkingLot implements ParkingLotDao {
                 .collect(Collectors.toList());
         return listOfDetailsOfHandicapeDriverVehicles;
     }
+
+    @Override
+    public List<String> getDetailsOfAllCarsInParticularLot() {
+        List<String> listOfDetailsOfAllCars = this.slots.stream()
+                .filter(slot -> slot.getVehicle() != null)
+                .map(slot -> ("Slot Number is " + slot.getSlotNumber() + ", Number Plate " + slot.vehicle.getNumberPlateOfVehicle() + ", Vehicle Name " + slot.vehicle.getNameOfVehicle() + ", Color " + slot.vehicle.getColorOfVehicle() + ", Driver Type " + slot.vehicle.getDriverTypeOfVehicle()))
+                .collect(Collectors.toList());
+        return listOfDetailsOfAllCars;
+    }
 }
