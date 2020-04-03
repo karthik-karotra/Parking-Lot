@@ -103,7 +103,8 @@ public class ParkingLot implements ParkingLotDao {
                     observer.slotsFull();
                 throw new ParkingLotException("Slots are full", ExceptionType.LOTS_FULL);
             }
-        } catch (ParkingLotException e) { }
+        } catch (ParkingLotException e) {
+        }
         return unOccupiedSlotList;
     }
 
@@ -141,12 +142,12 @@ public class ParkingLot implements ParkingLotDao {
     }
 
     @Override
-    public List<String> getDetailsOfBlueToyotaCarsInParticularLotByNameAndColor(String vehicleName,String color) {
+    public List<String> getDetailsOfBlueToyotaCarsInParticularLotByNameAndColor(String vehicleName, String color) {
         List<String> listOfDetailsOfBlueColoredToyotaCars = this.slots.stream()
                 .filter(slot -> slot.getVehicle() != null)
                 .filter(slot -> slot.getVehicle().getColorOfVehicle().equals(color))
                 .filter(slot -> slot.getVehicle().getNameOfVehicle().equals(vehicleName))
-                .map(slot -> ("Slot Number is "+slot.getSlotNumber()+"Number Plate "+slot.vehicle.getNumberPlateOfVehicle()))
+                .map(slot -> ("Slot Number is " + slot.getSlotNumber() + "Number Plate " + slot.vehicle.getNumberPlateOfVehicle()))
                 .collect(Collectors.toList());
         return listOfDetailsOfBlueColoredToyotaCars;
     }
@@ -156,8 +157,17 @@ public class ParkingLot implements ParkingLotDao {
         List<String> listOfBMWCars = this.slots.stream()
                 .filter(slot -> slot.getVehicle() != null)
                 .filter(slot -> slot.getVehicle().getNameOfVehicle().equals(vehicleName))
-                .map(slot -> ("Slot Number is "+slot.getSlotNumber()))
+                .map(slot -> ("Slot Number is " + slot.getSlotNumber()))
                 .collect(Collectors.toList());
         return listOfBMWCars;
+    }
+
+    @Override
+    public List<Vehicle> getListOfAllCarsParkedInLastThirtyMinutesInParticularLot() {
+        List<Vehicle> listOfAllCArsParkedInThirtyMinutesInParticularLot = this.slots.stream()
+                .filter(slot -> slot.getVehicle() != null)
+                .filter(slot -> (slot.getTimeOfParking().getMinute() > 0 && slot.getTimeOfParking().getMinute() <= 30))
+                .map(slot -> slot.getVehicle()).collect(Collectors.toList());
+        return listOfAllCArsParkedInThirtyMinutesInParticularLot;
     }
 }
