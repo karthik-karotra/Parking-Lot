@@ -33,8 +33,11 @@ public class ParkingLot implements ParkingLotDao {
         if (availableEmptySlots.size() == 0)
             throw new ParkingLotException("Slots full", ExceptionType.SLOT_FULL);
         else if (strategyType.equals(VehicleType.LARGE_VEHICLE)) {
-            if (availableEmptySlots.size() > 2)
+            if (availableEmptySlots.size() > 2) {
                 this.slots.get(availableEmptySlots.get(1)).setParkingTimeOfVehicle(vehicle);
+                noOfVehicles++;
+                return true;
+            }
         }
         this.slots.get(availableEmptySlots.get(0)).setParkingTimeOfVehicle(vehicle);
         noOfVehicles++;
@@ -179,5 +182,14 @@ public class ParkingLot implements ParkingLotDao {
                 .map(slot -> ("Slot Number is " + slot.getSlotNumber() + ", Number Plate " + slot.vehicle.getNumberPlateOfVehicle() + ", Vehicle Name " + slot.vehicle.getNameOfVehicle() + ", Color " + slot.vehicle.getColorOfVehicle()))
                 .collect(Collectors.toList());
         return listOfDetailsOfHandicapeDriverVehicles;
+    }
+
+    @Override
+    public List<String> getDetailsOfAllCarsInParticularLot() {
+        List<String> listOfDetailsOfAllCars = this.slots.stream()
+                .filter(slot -> slot.getVehicle() != null)
+                .map(slot -> ("Slot Number is " + slot.getSlotNumber() + ", Number Plate " + slot.vehicle.getNumberPlateOfVehicle() + ", Vehicle Name " + slot.vehicle.getNameOfVehicle() + ", Color " + slot.vehicle.getColorOfVehicle() + ", Driver Type " + slot.vehicle.getDriverTypeOfVehicle()))
+                .collect(Collectors.toList());
+        return listOfDetailsOfAllCars;
     }
 }
