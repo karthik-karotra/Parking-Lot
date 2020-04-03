@@ -63,4 +63,11 @@ public class ParkingLotSystem implements ParkingLotSystemDao {
                 .collect(Collectors.toList());
         return listOfAllCarsParkedInLastThirtyMinutesInAllLots;
     }
+
+    @Override
+    public List<List<String>> getDetailsOfHandicapeDriverVehiclesInAllLots(String driverType) {
+        List<List<String>> overallListOfHandicapeDriverVehiclesInAllLots = this.parkingLot.stream()
+                .map(parkingLot -> parkingLot.getDetailsOfHandicapeDriverVehicles(driverType)).collect(Collectors.toList());
+        return overallListOfHandicapeDriverVehiclesInAllLots;
+    }
 }

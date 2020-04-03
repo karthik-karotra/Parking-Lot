@@ -328,4 +328,22 @@ public class TestParkingLot {
         List<List<Vehicle>> overallListOfAllCarsParkedInLastThirtyMinutes = parkingLotSystem.getListOfAllCarsParkedInLastThirtyMinutesInAllLots();
         Assert.assertEquals(temporaryListOfAllCarsParkedInLastThirtyMinutes, overallListOfAllCarsParkedInLastThirtyMinutes);
     }
+
+    @Test
+    public void givenMultipleHandicapeDriversCars_ShouldReturnInformationOfCars() {
+        List<String> temporaryLot1 = new ArrayList();
+        temporaryLot1.add("Slot Number is 1, Number Plate MH 47 DE 4158, Vehicle Name Scorpio, Color White");
+        temporaryLot1.add("Slot Number is 2, Number Plate MH 49 DY 8458, Vehicle Name Scorpio, Color White");
+        Vehicle vehicle4 = new Vehicle("Blue", "Toyota", "MH 46 KA 5421", "Normal");
+        Vehicle vehicle5 = new Vehicle("White", "Scorpio", "MH 47 DE 4158", "Handicape");
+        Vehicle vehicle6 = new Vehicle("Red", "Toyoya", "MH 43 HE 4858", "Normal");
+        Vehicle vehicle7 = new Vehicle("White", "Scorpio", "MH 49 DY 8458", "Handicape");
+        parkingLotSystem = new ParkingLotSystem(5, 2);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle4);
+        parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle5);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle6);
+        parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle7);
+        List<List<String>> overallListOfBlueColoredToyotaCarsInDifferentLots = parkingLotSystem.getDetailsOfHandicapeDriverVehiclesInAllLots("Handicape");
+        Assert.assertEquals(temporaryLot1, overallListOfBlueColoredToyotaCarsInDifferentLots.get(0));
+    }
 }

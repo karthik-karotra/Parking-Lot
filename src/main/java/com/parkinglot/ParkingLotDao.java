@@ -20,4 +20,5 @@ public interface ParkingLotDao {
     List<String> getDetailsOfBlueToyotaCarsInParticularLotByNameAndColor(String vehicleName,String color);
     List<String> getListOfBMWCarsInParticularLotByVehicleName(String vehicleName);
     List<Vehicle> getListOfAllCarsParkedInLastThirtyMinutesInParticularLot();
+    List<String> getDetailsOfHandicapeDriverVehicles(String driverType);
 }
