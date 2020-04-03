@@ -25,7 +25,7 @@ public class Slots {
         return vehicle;
     }
 
-    public int getSlotNumber() {
+    public Integer getSlotNumber() {
         return slotNumber;
     }
 }

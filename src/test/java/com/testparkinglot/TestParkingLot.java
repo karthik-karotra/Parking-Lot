@@ -6,6 +6,7 @@ import com.parkinglotexception.ParkingLotException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,8 @@ public class TestParkingLot {
 
     @Test
     public void givenInitiallyAVehicle_WantsToPark_ShouldReturnTrue() {
+        new ParkingLot(1).parkVehicle(vehicle);
+        ParkingLot parkingLot = new ParkingLot(1);
         parkingLot.parkVehicle(vehicle);
         boolean checkIfVehicleIsParked = parkingLot.checkIfVehicleIsParked(vehicle);
         Assert.assertTrue(checkIfVehicleIsParked);
@@ -219,6 +222,24 @@ public class TestParkingLot {
             parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, new Object());
             parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, new Object());
             parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle1);
+        } catch (ParkingLotException ex) {
+            Assert.assertEquals(ExceptionType.LOTS_FULL, ex.type);
+        }
+    }
+
+    @Test
+    public void givenALargeVehicle_WhenWantsToPark_CheckForVacantSlotsOnAlternateSides_IfNot_ThenParkOnEmptySlot_ShouldReturnLotNumber() {
+        try {
+            Object vehicle4 = new Object();
+            Object vehicle5 = new Object();
+            parkingLotSystem = new ParkingLotSystem(5, 2);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle1);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle4);
+            parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle5);
+            parkingLotSystem.parkVehicle(VehicleType.LARGE_VEHICLE, vehicle2);
+            ParkingLot assignedLot = parkingLotSystem.getLotOfParkedVehicle(vehicle2);
+            Assert.assertEquals(parkingLotSystem.parkingLot.get(1), assignedLot);
         } catch (ParkingLotException ex) {
             Assert.assertEquals(ExceptionType.LOTS_FULL, ex.type);
         }

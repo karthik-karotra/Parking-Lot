@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class ParkingLot {
+public class ParkingLot implements ParkingLotDao {
 
     private Integer totalSlotCapacity;
     private List<ParkingLotObservers> observersList;
@@ -21,24 +21,41 @@ public class ParkingLot {
         this.initializingSlots();
     }
 
+    @Override
     public void initializingSlots() {
         IntStream.range(0, totalSlotCapacity).forEach(slotNumber -> slots.add(new Slots(slotNumber)));
     }
 
+    @Override
     public boolean parkVehicle(Object vehicle) {
         List<Integer> availableEmptySlots = getAvailableEmptySlots();
         if (availableEmptySlots.size() == 0)
             throw new ParkingLotException("Slots full", ExceptionType.SLOT_FULL);
-        this.slots.get(availableEmptySlots.get(0)).setParkingTimeOfVehicle(vehicle);;
+        this.slots.get(availableEmptySlots.get(0)).setParkingTimeOfVehicle(vehicle);
         noOfVehicles++;
         return true;
     }
 
+    public boolean parkVehicle(VehicleType vehicleType, Object vehicle) {
+        List<Integer> availableEmptySlots = getAvailableEmptySlots();
+        if (availableEmptySlots.size() == 0)
+            throw new ParkingLotException("Slots full", ExceptionType.SLOT_FULL);
+        else if (vehicleType.equals(VehicleType.LARGE_VEHICLE)) {
+            if (availableEmptySlots.size() > 2)
+                this.slots.get(availableEmptySlots.get(1)).setParkingTimeOfVehicle(vehicle);
+        }
+        this.slots.get(availableEmptySlots.get(0)).setParkingTimeOfVehicle(vehicle);
+        noOfVehicles++;
+        return true;
+    }
+
+    @Override
     public void parkVehicle(Integer slot, Object vehicle) {
         this.slots.get(slot).setParkingTimeOfVehicle(vehicle);
         noOfVehicles++;
     }
 
+    @Override
     public boolean checkIfVehicleIsParked(Object vehicle) {
         try {
             boolean whetherParked = this.slots.stream()
@@ -49,6 +66,7 @@ public class ParkingLot {
         }
     }
 
+    @Override
     public void unparkVehicle(Object vehicle) {
         Slots slots = this.slots.stream()
                 .filter(slot -> vehicle.equals(slot.getVehicle()))
@@ -60,6 +78,7 @@ public class ParkingLot {
         noOfVehicles--;
     }
 
+    @Override
     public boolean checkIfVehicleIsUnParked(Object vehicle) {
         boolean isPresent = this.slots.stream()
                 .filter(slot -> slot.getVehicle() == (vehicle))
@@ -70,14 +89,17 @@ public class ParkingLot {
         throw new ParkingLotException("Vehicle not unparked", ExceptionType.VEHICLE_NOT_FOUND);
     }
 
+    @Override
     public void registerObserver(ParkingLotObservers observer) {
         observersList.add(observer);
     }
 
+    @Override
     public void setTotalSlotCapacity(int totalSlotCapacity) {
         this.totalSlotCapacity = totalSlotCapacity;
     }
 
+    @Override
     public List<Integer> getAvailableEmptySlots() {
 
         List<Integer> unOccupiedSlotList = new ArrayList();
@@ -90,11 +112,13 @@ public class ParkingLot {
                     observer.slotsFull();
                 throw new ParkingLotException("Slots are full", ExceptionType.LOTS_FULL);
             }
-        } catch (ParkingLotException e) { }
+        } catch (ParkingLotException e) {
+        }
         return unOccupiedSlotList;
     }
 
-    public int findVehicle(Object vehicle) {
+    @Override
+    public Integer findVehicle(Object vehicle) {
         Slots slots = this.slots.stream()
                 .filter(slot -> slot.getVehicle() == vehicle)
                 .findFirst()
@@ -102,10 +126,12 @@ public class ParkingLot {
         return slots.getSlotNumber();
     }
 
+    @Override
     public Integer getCountOfVehiclesParked() {
         return this.noOfVehicles;
     }
 
+    @Override
     public LocalDateTime getParkingTimeOfVehicle(Object vehicle) {
         return this.slots.stream()
                 .filter(slot -> slot.getVehicle().equals(vehicle))

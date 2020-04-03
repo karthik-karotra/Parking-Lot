@@ -1,4 +1,4 @@
-package com.unittestingusingmockito;
+/*package com.unittestingusingmockito;
 
 import com.parkinglot.DriverType;
 import com.parkinglot.ParkingLotOwner;
@@ -35,7 +35,7 @@ public class ParkingLotExceptionTest {
         doThrow(ParkingLotException.class)
                 .when(parkingLot).parkVehicle(any(), any(Object.class));
         parkingLot.parkVehicle(1, DriverType.NORMAL_DRIVER);
-    }
+    }*/
 
     /*@Test
     public void testVehicleAlReadyParkedException_WhenVehicleObjectPassedToParkFunction_ThrowAnException() {
@@ -91,4 +91,4 @@ public class ParkingLotExceptionTest {
         }
     }
 }*/
-}
+//}

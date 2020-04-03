@@ -9,7 +9,7 @@ public class HandicapDriver implements ParkingStrategy {
     public ParkingLot getLot(List<ParkingLot> parkingLot) {
         ParkingLot parkingLots = parkingLot.stream()
                 .filter(lot -> lot.getAvailableEmptySlots().size() > 0)
-                .findAny()
+                .findFirst()
                 .orElseThrow(() -> new ParkingLotException("Lots full", ParkingLotException.ExceptionType.LOTS_FULL));
         return parkingLots;
     }
