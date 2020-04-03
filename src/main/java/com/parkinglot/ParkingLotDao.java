@@ -6,7 +6,7 @@ import java.util.List;
 public interface ParkingLotDao {
 
     void initializingSlots();
-    boolean parkVehicle(Object vehicle);
+    boolean parkVehicle(Enum strategyType,Object vehicle);
     void parkVehicle(Integer slot, Object vehicle);
     boolean checkIfVehicleIsParked(Object vehicle);
     void unparkVehicle(Object vehicle);

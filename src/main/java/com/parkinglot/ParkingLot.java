@@ -27,20 +27,11 @@ public class ParkingLot implements ParkingLotDao {
     }
 
     @Override
-    public boolean parkVehicle(Object vehicle) {
+    public boolean parkVehicle(Enum strategyType,Object vehicle) {
         List<Integer> availableEmptySlots = getAvailableEmptySlots();
         if (availableEmptySlots.size() == 0)
             throw new ParkingLotException("Slots full", ExceptionType.SLOT_FULL);
-        this.slots.get(availableEmptySlots.get(0)).setParkingTimeOfVehicle(vehicle);
-        noOfVehicles++;
-        return true;
-    }
-
-    public boolean parkVehicle(VehicleType vehicleType, Object vehicle) {
-        List<Integer> availableEmptySlots = getAvailableEmptySlots();
-        if (availableEmptySlots.size() == 0)
-            throw new ParkingLotException("Slots full", ExceptionType.SLOT_FULL);
-        else if (vehicleType.equals(VehicleType.LARGE_VEHICLE)) {
+        else if (strategyType.equals(VehicleType.LARGE_VEHICLE)) {
             if (availableEmptySlots.size() > 2)
                 this.slots.get(availableEmptySlots.get(1)).setParkingTimeOfVehicle(vehicle);
         }

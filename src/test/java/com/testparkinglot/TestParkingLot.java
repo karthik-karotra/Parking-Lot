@@ -31,9 +31,9 @@ public class TestParkingLot {
 
     @Test
     public void givenInitiallyAVehicle_WantsToPark_ShouldReturnTrue() {
-        new ParkingLot(1).parkVehicle(vehicle);
+        new ParkingLot(1).parkVehicle(DriverType.NORMAL_DRIVER,vehicle);
         ParkingLot parkingLot = new ParkingLot(1);
-        parkingLot.parkVehicle(vehicle);
+        parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle);
         boolean checkIfVehicleIsParked = parkingLot.checkIfVehicleIsParked(vehicle);
         Assert.assertTrue(checkIfVehicleIsParked);
     }
@@ -41,7 +41,7 @@ public class TestParkingLot {
     @Test
     public void givenAVehicle_WantsToParkButCouldNotPark_ShouldThrowException() {
         try {
-            parkingLot.parkVehicle(vehicle);
+            parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle);
             boolean checkIfVehicleIsParked = parkingLot.checkIfVehicleIsParked(vehicle1);
         } catch (ParkingLotException ex) {
             Assert.assertEquals(ParkingLotException.ExceptionType.VEHICLE_NOT_PARKED, ex.type);
@@ -50,7 +50,7 @@ public class TestParkingLot {
 
     @Test
     public void givenInitiallyAParkedVehicle_WantsToUnPark_ShouldReturnTrue() {
-        parkingLot.parkVehicle(vehicle);
+        parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle);
         parkingLot.unparkVehicle(vehicle);
         boolean checkIfVehicleIsUnParked = parkingLot.checkIfVehicleIsUnParked(vehicle);
         Assert.assertTrue(checkIfVehicleIsUnParked);
@@ -59,7 +59,7 @@ public class TestParkingLot {
     @Test
     public void givenAVehicle_WantsToUnparkButCouldNotUnpark_ShouldThrowException() {
         try {
-            parkingLot.parkVehicle(vehicle);
+            parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle);
             parkingLot.unparkVehicle(vehicle1);
             boolean checkIfVehicleIsUnParked = parkingLot.checkIfVehicleIsUnParked(vehicle);
         } catch (ParkingLotException ex) {
@@ -72,8 +72,8 @@ public class TestParkingLot {
         try {
             parkingLot.setTotalSlotCapacity(1);
             parkingLot.initializingSlots();
-            parkingLot.parkVehicle(vehicle);
-            parkingLot.parkVehicle(vehicle1);
+            parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle);
+            parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle1);
             parkingLot.checkIfVehicleIsParked(vehicle1);
         } catch (ParkingLotException ex) {
             Assert.assertEquals(ParkingLotException.ExceptionType.SLOT_FULL, ex.type);
@@ -84,8 +84,8 @@ public class TestParkingLot {
     public void givenAParkingLot_WhenFull_ShouldInformTheOwner() {
         try {
             parkingLot.registerObserver(parkingLotOwner);
-            parkingLot.parkVehicle(vehicle);
-            parkingLot.parkVehicle(vehicle1);
+            parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle);
+            parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle1);
             parkingLot.checkIfVehicleIsParked(vehicle1);
         } catch (ParkingLotException ex) {
             boolean checkIfSlotIsFull = parkingLotOwner.checkIfSlotIsFull();
@@ -97,8 +97,8 @@ public class TestParkingLot {
     public void givenAParkingLot_WhenFull_ShouldInformTheSecurityPersonal() {
         try {
             parkingLot.registerObserver(securityPerson);
-            parkingLot.parkVehicle(vehicle);
-            parkingLot.parkVehicle(vehicle1);
+            parkingLot.parkVehicle(DriverType.NORMAL_DRIVER ,vehicle);
+            parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle1);
             parkingLot.checkIfVehicleIsParked(vehicle1);
         } catch (ParkingLotException ex) {
             boolean checkIfSlotIsFull = securityPerson.checkIfSlotIsFull();
@@ -109,7 +109,7 @@ public class TestParkingLot {
     @Test
     public void givenAParkingLot_WhenEmpty_ShouldInformTheOwner() {
         parkingLot.registerObserver(parkingLotOwner);
-        parkingLot.parkVehicle(vehicle);
+        parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle);
         parkingLot.unparkVehicle(vehicle);
         parkingLot.checkIfVehicleIsUnParked(vehicle);
         Assert.assertFalse(parkingLotOwner.checkIfSlotIsFull());
@@ -118,7 +118,7 @@ public class TestParkingLot {
     @Test
     public void givenAParkingLot_WhenEmpty_ShouldInformTheSecurityPerson() {
         parkingLot.registerObserver(securityPerson);
-        parkingLot.parkVehicle(vehicle);
+        parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle);
         parkingLot.unparkVehicle(vehicle);
         parkingLot.checkIfVehicleIsUnParked(vehicle);
         Assert.assertFalse(securityPerson.checkIfSlotIsFull());
@@ -131,9 +131,9 @@ public class TestParkingLot {
         Object vehicle2 = new Object();
         Object vehicle3 = new Object();
         try {
-            parkingLot.parkVehicle(vehicle);
-            parkingLot.parkVehicle(vehicle2);
-            parkingLot.parkVehicle(vehicle3);
+            parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle);
+            parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle2);
+            parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle3);
             parkingLot.checkIfVehicleIsParked(vehicle);
         } catch (ParkingLotException ex) {
             Assert.assertEquals(ParkingLotException.ExceptionType.SLOT_FULL, ex.type);
@@ -185,7 +185,7 @@ public class TestParkingLot {
 
     @Test
     public void givenAParkingLot_OwnerWantsToKnowWhenAVehicleWasParked_ShouldReturnTime() {
-        parkingLot.parkVehicle(vehicle);
+        parkingLot.parkVehicle(DriverType.NORMAL_DRIVER,vehicle);
         LocalDateTime parkingTime = parkingLot.getParkingTimeOfVehicle(vehicle);
         Assert.assertEquals(LocalDateTime.now().getMinute(), parkingTime.getMinute());
     }

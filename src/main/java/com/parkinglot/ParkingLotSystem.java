@@ -20,15 +20,9 @@ public class ParkingLotSystem implements ParkingLotSystemDao {
     }
 
     @Override
-    public void parkVehicle(DriverType driverType, Object vehicle) {
-        ParkingLot lot = new StrategyTypeFactory().getParkingStrategy(driverType).getLot(this.parkingLot);
-        lot.parkVehicle(vehicle);
-    }
-
-    @Override
-    public void parkVehicle(VehicleType vehicleType, Object vehicle) {
-        ParkingLot lot = new StrategyTypeFactory().getParkingStrategy(vehicleType).getLot(this.parkingLot);
-        lot.parkVehicle(VehicleType.LARGE_VEHICLE, vehicle);
+    public void parkVehicle(Enum strategyType, Object vehicle) {
+        ParkingLot lot = new StrategyTypeFactory().getParkingStrategy(strategyType).getLot(this.parkingLot);
+        lot.parkVehicle(strategyType,vehicle);
     }
 
     @Override
