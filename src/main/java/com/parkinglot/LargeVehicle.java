@@ -6,8 +6,6 @@ import java.util.List;
 
 public class LargeVehicle implements ParkingStrategy {
 
-    private List<Slots> slots;
-
     @Override
     public ParkingLot getLot(List<ParkingLot> parkingLot) {
         List<ParkingLot> temporaryLot = new ArrayList(parkingLot);

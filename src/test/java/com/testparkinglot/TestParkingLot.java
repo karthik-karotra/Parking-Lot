@@ -21,7 +21,7 @@ public class TestParkingLot {
     public void setUp() {
 
         parkingLot = new ParkingLot(1);
-        vehicle = new Vehicle("White", "Scorpio", "MH 43 AR 6451");
+        vehicle = new Vehicle("White", "BMW", "MH 43 AR 6451");
         vehicle1 = new Vehicle("White", "Toyota", "MH 43 AV 7854");
         vehicle2 = new Vehicle("Blue", "Toyota", "MH 43 AR 6210");
         parkingLotOwner = new ParkingLotOwner();
@@ -285,5 +285,26 @@ public class TestParkingLot {
         parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle5);
         List<List<String>> overallListOfBlueColoredToyotaCarsInDifferentLots = parkingLotSystem.getDetailsOfAllBlueToyotaCarsDifferentLotsByNameAndColor("Toyota", "Blue");
         Assert.assertEquals(temporaryListOfDetailsOfBlueColoredToyotaCars, overallListOfBlueColoredToyotaCarsInDifferentLots);
+    }
+
+    @Test
+    public void givenMultipleVehiclesToPark_ShouldReturnLocationBMWCars() {
+        List<String> temporaryLot1 = new ArrayList();
+        temporaryLot1.add("Slot Number is 0");
+        List<String> temporaryLot2 = new ArrayList();
+        temporaryLot2.add("Slot Number is 1");
+        List<List<String>> temporaryListOfLocationOfBMWCars = new ArrayList();
+        temporaryListOfLocationOfBMWCars.add(new ArrayList(temporaryLot1));
+        temporaryListOfLocationOfBMWCars.add(new ArrayList(temporaryLot2));
+        Vehicle vehicle4 = new Vehicle("Blue", "BMW", "MH 46 KA 5421");
+        Vehicle vehicle5 = new Vehicle("White", "Scorpio", "MH 47 DE 4158");
+        parkingLotSystem = new ParkingLotSystem(5, 2);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle1);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle2);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle4);
+        parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle5);
+        List<List<String>> overallListOfBMWCars = parkingLotSystem.getOverallListOfBMWCarsInDfferentLots("BMW");
+        Assert.assertEquals(temporaryListOfLocationOfBMWCars, overallListOfBMWCars);
     }
 }

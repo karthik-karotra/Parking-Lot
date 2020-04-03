@@ -18,4 +18,5 @@ public interface ParkingLotDao {
     LocalDateTime getParkingTimeOfVehicle(Vehicle vehicle);
     List<Integer> getListOfWhiteVehiclesInParticularLotByColor(String color);
     List<String> getDetailsOfBlueToyotaCarsInParticularLotByNameAndColor(String vehicleName,String color);
+    List<String> getListOfBMWCarsInParticularLotByVehicleName(String vehicleName);
 }

@@ -48,4 +48,11 @@ public class ParkingLotSystem implements ParkingLotSystemDao {
                 .map(parkingLot -> parkingLot.getDetailsOfBlueToyotaCarsInParticularLotByNameAndColor(vehicleName,color)).collect(Collectors.toList());
         return overallListOfBlueColoredToyotaCarsInDifferentLots;
     }
+
+    @Override
+    public List<List<String>> getOverallListOfBMWCarsInDfferentLots(String vehicleName) {
+        List<List<String>> overallListOfBMWCars = this.parkingLot.stream()
+                .map(parkingLot -> parkingLot.getListOfBMWCarsInParticularLotByVehicleName(vehicleName)).collect(Collectors.toList());
+        return overallListOfBMWCars;
+    }
 }

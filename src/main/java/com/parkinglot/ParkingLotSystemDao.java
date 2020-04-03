@@ -7,4 +7,5 @@ public interface ParkingLotSystemDao {
     ParkingLot getLotOfParkedVehicle(Vehicle vehicle);
     List<List<Integer>> getOverallLotOfWhiteColorVehicle(String color);
     List<List<String>> getDetailsOfAllBlueToyotaCarsDifferentLotsByNameAndColor(String vehicleName,String color);
+    List<List<String>> getOverallListOfBMWCarsInDfferentLots(String vehicleName);
 }

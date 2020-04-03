@@ -15,10 +15,10 @@ public class Vehicle {
         this.numberPlate=numberPlate;
     }
 
-
     public String getNameOfVehicle() {
         return vehicleName;
     }
+
     public String getNumberPlateOfVehicle() {
         return numberPlate;
     }
