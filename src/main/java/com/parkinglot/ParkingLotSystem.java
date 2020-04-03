@@ -14,7 +14,7 @@ public class ParkingLotSystem implements ParkingLotSystemDao {
     public ParkingLotSystem(int totalParkingSlots, int totalParkingLots) {
         this.totalParkingSlots = totalParkingSlots;
         this.totalParkingLots = totalParkingLots;
-        this.parkingLot = new ArrayList<>();
+        this.parkingLot = new ArrayList();
         this.strategyTypeFactory = new StrategyTypeFactory();
         IntStream.range(0, totalParkingLots)
                 .forEach(assignedLotNo -> parkingLot.add(new ParkingLot(5)));
@@ -40,5 +40,12 @@ public class ParkingLotSystem implements ParkingLotSystemDao {
         List<List<Integer>> overallListOfWhiteVehicles = this.parkingLot.stream()
                 .map(parkingLot -> parkingLot.getListOfWhiteVehiclesInParticularLotByColor(color)).collect(Collectors.toList());
         return overallListOfWhiteVehicles;
+    }
+
+    @Override
+    public List<List<String>> getDetailsOfAllBlueToyotaCarsDifferentLotsByNameAndColor(String vehicleName,String color) {
+        List<List<String>> overallListOfBlueColoredToyotaCarsInDifferentLots =this.parkingLot.stream()
+                .map(parkingLot -> parkingLot.getDetailsOfBlueToyotaCarsInParticularLotByNameAndColor(vehicleName,color)).collect(Collectors.toList());
+        return overallListOfBlueColoredToyotaCarsInDifferentLots;
     }
 }

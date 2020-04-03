@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Slots {
 
-    private Vehicle vehicle;
+    public Vehicle vehicle;
     private LocalDateTime time;
     private int slotNumber;
 

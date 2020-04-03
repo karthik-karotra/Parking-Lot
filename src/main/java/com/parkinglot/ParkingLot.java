@@ -17,8 +17,8 @@ public class ParkingLot implements ParkingLotDao {
 
     public ParkingLot(Integer slotCapacity) {
         this.totalSlotCapacity = slotCapacity;
-        this.observersList = new ArrayList<>();
-        this.slots = new ArrayList<>();
+        this.observersList = new ArrayList();
+        this.slots = new ArrayList();
         this.initializingSlots();
     }
 
@@ -138,5 +138,16 @@ public class ParkingLot implements ParkingLotDao {
                 .map(slot -> slot.getSlotNumber())
                 .collect(Collectors.toList());
         return listOfWhiteVehicles;
+    }
+
+    @Override
+    public List<String> getDetailsOfBlueToyotaCarsInParticularLotByNameAndColor(String vehicleName,String color) {
+        List<String> listOfDetailsOfBlueColoredToyotaCars = this.slots.stream()
+                .filter(slot -> slot.getVehicle() != null)
+                .filter(slot -> slot.getVehicle().getColorOfVehicle().equals(color))
+                .filter(slot -> slot.getVehicle().getNameOfVehicle().equals(vehicleName))
+                .map(slot -> ("Slot Number is "+slot.getSlotNumber()+"Number Plate "+slot.vehicle.getNumberPlateOfVehicle()))
+                .collect(Collectors.toList());
+        return listOfDetailsOfBlueColoredToyotaCars;
     }
 }
