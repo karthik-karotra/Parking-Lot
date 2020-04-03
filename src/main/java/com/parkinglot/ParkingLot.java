@@ -5,6 +5,7 @@ import static com.parkinglotexception.ParkingLotException.ExceptionType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ParkingLot implements ParkingLotDao {
@@ -27,7 +28,7 @@ public class ParkingLot implements ParkingLotDao {
     }
 
     @Override
-    public boolean parkVehicle(Enum strategyType,Object vehicle) {
+    public boolean parkVehicle(Enum strategyType, Vehicle vehicle) {
         List<Integer> availableEmptySlots = getAvailableEmptySlots();
         if (availableEmptySlots.size() == 0)
             throw new ParkingLotException("Slots full", ExceptionType.SLOT_FULL);
@@ -41,13 +42,13 @@ public class ParkingLot implements ParkingLotDao {
     }
 
     @Override
-    public void parkVehicle(Integer slot, Object vehicle) {
+    public void parkVehicle(Integer slot, Vehicle vehicle) {
         this.slots.get(slot).setParkingTimeOfVehicle(vehicle);
         noOfVehicles++;
     }
 
     @Override
-    public boolean checkIfVehicleIsParked(Object vehicle) {
+    public boolean checkIfVehicleIsParked(Vehicle vehicle) {
         try {
             boolean whetherParked = this.slots.stream()
                     .anyMatch(slot -> vehicle.equals(slot.getVehicle()));
@@ -58,7 +59,7 @@ public class ParkingLot implements ParkingLotDao {
     }
 
     @Override
-    public void unparkVehicle(Object vehicle) {
+    public void unparkVehicle(Vehicle vehicle) {
         Slots slots = this.slots.stream()
                 .filter(slot -> vehicle.equals(slot.getVehicle()))
                 .findFirst()
@@ -70,7 +71,7 @@ public class ParkingLot implements ParkingLotDao {
     }
 
     @Override
-    public boolean checkIfVehicleIsUnParked(Object vehicle) {
+    public boolean checkIfVehicleIsUnParked(Vehicle vehicle) {
         boolean isPresent = this.slots.stream()
                 .filter(slot -> slot.getVehicle() == (vehicle))
                 .findFirst()
@@ -92,7 +93,6 @@ public class ParkingLot implements ParkingLotDao {
 
     @Override
     public List<Integer> getAvailableEmptySlots() {
-
         List<Integer> unOccupiedSlotList = new ArrayList();
         try {
             IntStream.range(0, totalSlotCapacity)
@@ -103,13 +103,12 @@ public class ParkingLot implements ParkingLotDao {
                     observer.slotsFull();
                 throw new ParkingLotException("Slots are full", ExceptionType.LOTS_FULL);
             }
-        } catch (ParkingLotException e) {
-        }
+        } catch (ParkingLotException e) { }
         return unOccupiedSlotList;
     }
 
     @Override
-    public Integer findVehicle(Object vehicle) {
+    public Integer findVehicle(Vehicle vehicle) {
         Slots slots = this.slots.stream()
                 .filter(slot -> slot.getVehicle() == vehicle)
                 .findFirst()
@@ -123,11 +122,21 @@ public class ParkingLot implements ParkingLotDao {
     }
 
     @Override
-    public LocalDateTime getParkingTimeOfVehicle(Object vehicle) {
+    public LocalDateTime getParkingTimeOfVehicle(Vehicle vehicle) {
         return this.slots.stream()
                 .filter(slot -> slot.getVehicle().equals(vehicle))
                 .findFirst()
                 .get()
                 .getTimeOfParking();
+    }
+
+    @Override
+    public List<Integer> getListOfWhiteVehiclesInParticularLotByColor(String color) {
+        List<Integer> listOfWhiteVehicles = this.slots.stream()
+                .filter(slot -> slot.getVehicle() != null)
+                .filter(slot -> slot.getVehicle().getColorOfVehicle().equals(color))
+                .map(slot -> slot.getSlotNumber())
+                .collect(Collectors.toList());
+        return listOfWhiteVehicles;
     }
 }

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Slots {
 
-    private Object vehicle;
+    private Vehicle vehicle;
     private LocalDateTime time;
     private int slotNumber;
 
@@ -16,12 +16,12 @@ public class Slots {
         return time;
     }
 
-    public void setParkingTimeOfVehicle(Object vehicle) {
+    public void setParkingTimeOfVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
         this.time = LocalDateTime.now();
     }
 
-    public Object getVehicle() {
+    public Vehicle getVehicle() {
         return vehicle;
     }
 

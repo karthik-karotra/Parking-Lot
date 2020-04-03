@@ -2,6 +2,7 @@ package com.parkinglot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ParkingLotSystem implements ParkingLotSystemDao {
@@ -20,17 +21,24 @@ public class ParkingLotSystem implements ParkingLotSystemDao {
     }
 
     @Override
-    public void parkVehicle(Enum strategyType, Object vehicle) {
+    public void parkVehicle(Enum strategyType, Vehicle vehicle) {
         ParkingLot lot = new StrategyTypeFactory().getParkingStrategy(strategyType).getLot(this.parkingLot);
-        lot.parkVehicle(strategyType,vehicle);
+        lot.parkVehicle(strategyType, vehicle);
     }
 
     @Override
-    public ParkingLot getLotOfParkedVehicle(Object vehicle) {
+    public ParkingLot getLotOfParkedVehicle(Vehicle vehicle) {
         ParkingLot lotOfParkedVehicle = this.parkingLot.stream()
                 .filter(lot -> lot.checkIfVehicleIsParked(vehicle))
                 .findFirst()
                 .orElse(null);
         return lotOfParkedVehicle;
+    }
+
+    @Override
+    public List<List<Integer>> getOverallLotOfWhiteColorVehicle(String color) {
+        List<List<Integer>> overallListOfWhiteVehicles = this.parkingLot.stream()
+                .map(parkingLot -> parkingLot.getListOfWhiteVehiclesInParticularLotByColor(color)).collect(Collectors.toList());
+        return overallListOfWhiteVehicles;
     }
 }

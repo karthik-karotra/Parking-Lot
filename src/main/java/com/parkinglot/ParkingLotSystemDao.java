@@ -1,7 +1,9 @@
 package com.parkinglot;
 
-public interface ParkingLotSystemDao {
+import java.util.List;
 
-    void parkVehicle(Enum strategyType, Object vehicle);
-    ParkingLot getLotOfParkedVehicle(Object vehicle);
+public interface ParkingLotSystemDao {
+    void parkVehicle(Enum strategyType, Vehicle vehicle);
+    ParkingLot getLotOfParkedVehicle(Vehicle vehicle);
+    List<List<Integer>> getOverallLotOfWhiteColorVehicle(String color);
 }
