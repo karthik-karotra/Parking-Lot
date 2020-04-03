@@ -43,9 +43,9 @@ public class ParkingLotSystem implements ParkingLotSystemDao {
     }
 
     @Override
-    public List<List<String>> getDetailsOfAllBlueToyotaCarsDifferentLotsByNameAndColor(String vehicleName,String color) {
-        List<List<String>> overallListOfBlueColoredToyotaCarsInDifferentLots =this.parkingLot.stream()
-                .map(parkingLot -> parkingLot.getDetailsOfBlueToyotaCarsInParticularLotByNameAndColor(vehicleName,color)).collect(Collectors.toList());
+    public List<List<String>> getDetailsOfAllBlueToyotaCarsDifferentLotsByNameAndColor(String vehicleName, String color) {
+        List<List<String>> overallListOfBlueColoredToyotaCarsInDifferentLots = this.parkingLot.stream()
+                .map(parkingLot -> parkingLot.getDetailsOfBlueToyotaCarsInParticularLotByNameAndColor(vehicleName, color)).collect(Collectors.toList());
         return overallListOfBlueColoredToyotaCarsInDifferentLots;
     }
 
@@ -54,5 +54,13 @@ public class ParkingLotSystem implements ParkingLotSystemDao {
         List<List<String>> overallListOfBMWCars = this.parkingLot.stream()
                 .map(parkingLot -> parkingLot.getListOfBMWCarsInParticularLotByVehicleName(vehicleName)).collect(Collectors.toList());
         return overallListOfBMWCars;
+    }
+
+    @Override
+    public List<List<Vehicle>> getListOfAllCarsParkedInLastThirtyMinutesInAllLots() {
+        List<List<Vehicle>> listOfAllCarsParkedInLastThirtyMinutesInAllLots = this.parkingLot.stream()
+                .map(parkingLot -> parkingLot.getListOfAllCarsParkedInLastThirtyMinutesInParticularLot())
+                .collect(Collectors.toList());
+        return listOfAllCarsParkedInLastThirtyMinutesInAllLots;
     }
 }

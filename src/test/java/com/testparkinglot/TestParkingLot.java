@@ -307,4 +307,25 @@ public class TestParkingLot {
         List<List<String>> overallListOfBMWCars = parkingLotSystem.getOverallListOfBMWCarsInDfferentLots("BMW");
         Assert.assertEquals(temporaryListOfLocationOfBMWCars, overallListOfBMWCars);
     }
+
+    @Test
+    public void GivenMultipleVehiclesToPark_ShouldReturnListOfVehiclesParkedUnLastThirtyMinutes() {
+        Vehicle vehicle4 = new Vehicle("Blue", "BMW", "MH 46 KA 5421");
+        List<Vehicle> temporaryLot1 = new ArrayList();
+        temporaryLot1.add(vehicle);
+        temporaryLot1.add(vehicle2);
+        List<Vehicle> temporaryLot2 = new ArrayList();
+        temporaryLot2.add(vehicle1);
+        temporaryLot2.add(vehicle4);
+        List<List<String>> temporaryListOfAllCarsParkedInLastThirtyMinutes = new ArrayList();
+        temporaryListOfAllCarsParkedInLastThirtyMinutes.add(new ArrayList(temporaryLot1));
+        temporaryListOfAllCarsParkedInLastThirtyMinutes.add(new ArrayList(temporaryLot2));
+        parkingLotSystem = new ParkingLotSystem(5, 2);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle1);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle2);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle4);
+        List<List<Vehicle>> overallListOfAllCarsParkedInLastThirtyMinutes = parkingLotSystem.getListOfAllCarsParkedInLastThirtyMinutesInAllLots();
+        Assert.assertEquals(temporaryListOfAllCarsParkedInLastThirtyMinutes, overallListOfAllCarsParkedInLastThirtyMinutes);
+    }
 }
