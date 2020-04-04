@@ -10,12 +10,6 @@ public class Vehicle {
         this.color = color;
     }
 
-    public Vehicle(String color, String vehicleName, String numberPlate) {
-        this.color = color;
-        this.vehicleName = vehicleName;
-        this.numberPlate = numberPlate;
-    }
-
     public Vehicle(String color, String vehicleName, String numberPlate, String driverType) {
         this.color = color;
         this.vehicleName = vehicleName;
@@ -25,6 +19,10 @@ public class Vehicle {
 
     public String getNameOfVehicle() {
         return vehicleName;
+    }
+
+    public String getNameOfVehicle1(String type) {
+        return (type == "BMW") ? vehicleName : (type == "White") ? color : driverType;
     }
 
     public String getNumberPlateOfVehicle() {

@@ -118,15 +118,6 @@ public class ParkingLot {
                 .getTimeOfParking();
     }
 
-    public List<Integer> getListOfWhiteVehiclesInParticularLotByColor(String color) {
-        List<Integer> listOfWhiteVehicles = this.slots.stream()
-                .filter(slot -> slot.getVehicle() != null)
-                .filter(slot -> slot.getVehicle().getColorOfVehicle().equals(color))
-                .map(slot -> slot.getParkingSlotNumber())
-                .collect(Collectors.toList());
-        return listOfWhiteVehicles;
-    }
-
     public List<String> getDetailsOfBlueToyotaCarsInParticularLotByNameAndColor(String vehicleName, String color) {
         List<String> listOfDetailsOfBlueColoredToyotaCars = this.slots.stream()
                 .filter(slot -> slot.getVehicle() != null)
@@ -137,13 +128,13 @@ public class ParkingLot {
         return listOfDetailsOfBlueColoredToyotaCars;
     }
 
-    public List<String> getListOfBMWCarsInParticularLotByVehicleName(String vehicleName) {
-        List<String> listOfBMWCars = this.slots.stream()
+    public List<String> getDetailsOfCarsInParticularLotByFieldOfVehicle(String fieldOfVehicle) {
+        List<String> listOfCarsByFieldOfVehicle = this.slots.stream()
                 .filter(slot -> slot.getVehicle() != null)
-                .filter(slot -> slot.getVehicle().getNameOfVehicle().equals(vehicleName))
-                .map(slot -> ("ParkingSlot Number is " + slot.getParkingSlotNumber()))
+                .filter(slot -> slot.getVehicle().getNameOfVehicle1(fieldOfVehicle).equals(fieldOfVehicle))
+                .map(slot -> ("ParkingSlot Number is " + slot.getParkingSlotNumber() + ", Number Plate " + slot.vehicle.getNumberPlateOfVehicle() + ", Vehicle Name " + slot.vehicle.getNameOfVehicle() + ", Color " + slot.vehicle.getColorOfVehicle()))
                 .collect(Collectors.toList());
-        return listOfBMWCars;
+        return listOfCarsByFieldOfVehicle;
     }
 
     public List<Vehicle> getListOfAllCarsParkedInLastThirtyMinutesInParticularLot() {
@@ -152,15 +143,6 @@ public class ParkingLot {
                 .filter(slot -> (LocalDateTime.now().getMinute() - slot.getTimeOfParking().getMinute() >= 0 && LocalDateTime.now().getMinute() - slot.getTimeOfParking().getMinute() <= 30))
                 .map(slot -> slot.getVehicle()).collect(Collectors.toList());
         return listOfAllCArsParkedInThirtyMinutesInParticularLot;
-    }
-
-    public List<String> getDetailsOfHandicapeDriverVehicles(String driverType) {
-        List<String> listOfDetailsOfHandicapeDriverVehicles = this.slots.stream()
-                .filter(slot -> slot.getVehicle() != null)
-                .filter(slot -> slot.getVehicle().getDriverTypeOfVehicle().equals(driverType))
-                .map(slot -> ("ParkingSlot Number is " + slot.getParkingSlotNumber() + ", Number Plate " + slot.vehicle.getNumberPlateOfVehicle() + ", Vehicle Name " + slot.vehicle.getNameOfVehicle() + ", Color " + slot.vehicle.getColorOfVehicle()))
-                .collect(Collectors.toList());
-        return listOfDetailsOfHandicapeDriverVehicles;
     }
 
     public List<String> getDetailsOfAllCarsInParticularLot() {

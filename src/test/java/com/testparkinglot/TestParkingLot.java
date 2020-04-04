@@ -26,9 +26,9 @@ public class TestParkingLot {
     public void setUp() {
 
         parkingLot = new ParkingLot(1);
-        vehicle = new Vehicle("White", "BMW", "MH 43 AR 6451");
-        vehicle1 = new Vehicle("White", "Toyota", "MH 43 AV 7854");
-        vehicle2 = new Vehicle("Blue", "Toyota", "MH 43 AR 6210");
+        vehicle = new Vehicle("White", "BMW", "MH 43 AR 6451", "Normal");
+        vehicle1 = new Vehicle("White", "Toyota", "MH 43 AV 7854", "Normal");
+        vehicle2 = new Vehicle("Blue", "Toyota", "MH 43 AR 6210", "Normal");
         parkingLotOwner = new ParkingLotOwner();
         securityPerson = new SecurityPerson();
         parkingLotSystem = new ParkingLotSystem(2, 2);
@@ -251,23 +251,26 @@ public class TestParkingLot {
 
     @Test
     public void givenMultipleVehiclesToPark_ShouldReturnLocationOfWhiteVehicles() {
-        List<Integer> temporaryLot1 = new ArrayList();
-        List<Integer> temporaryLot2 = new ArrayList();
-        temporaryLot1.add(0);
-        temporaryLot1.add(2);
-        temporaryLot2.add(0);
+        List<String> temporaryLot1 = new ArrayList();
+        List<String> temporaryLot2 = new ArrayList();
+        temporaryLot1.add("ParkingSlot Number is 0, Number Plate MH 46 KA 5421, Vehicle Name Toyota, Color White");
+        temporaryLot1.add("ParkingSlot Number is 2, Number Plate MH 49 DY 8458, Vehicle Name Scorpio, Color White");
+        temporaryLot2.add("ParkingSlot Number is 0, Number Plate MH 47 DE 4158, Vehicle Name Scorpio, Color White");
         List<List<Integer>> temporaryListOfWhiteVehicle = new ArrayList();
         temporaryListOfWhiteVehicle.add(new ArrayList(temporaryLot1));
         temporaryListOfWhiteVehicle.add(new ArrayList(temporaryLot2));
-        Vehicle vehicle4 = new Vehicle("Purple");
-        Vehicle vehicle5 = new Vehicle("White");
+        Vehicle vehicle4 = new Vehicle("White", "Toyota", "MH 46 KA 5421", "Normal");
+        Vehicle vehicle5 = new Vehicle("White", "Scorpio", "MH 47 DE 4158", "Normal");
+        Vehicle vehicle6 = new Vehicle("Red", "Toyoya", "MH 43 HE 4858", "Normal");
+        Vehicle vehicle7 = new Vehicle("Blue", "Scorpio", "MH 49 DY 8458", "Normal");
+        Vehicle vehicle8 = new Vehicle("White", "Scorpio", "MH 49 DY 8458", "Handicape");
         parkingLotSystem = new ParkingLotSystem(5, 2);
-        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
-        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle1);
-        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle2);
         parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle4);
-        parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle5);
-        List<List<Integer>> overallListOfWhiteVehicles = parkingLotSystem.getOverallLotOfWhiteColorVehicle("White");
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle5);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle6);
+        parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle7);
+        parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle8);
+        List<List<String>> overallListOfWhiteVehicles = parkingLotSystem.getOverallListOfCarsInDifferentLotsByFieldOfVehicle("White");
         Assert.assertEquals(temporaryListOfWhiteVehicle, overallListOfWhiteVehicles);
     }
 
@@ -280,8 +283,8 @@ public class TestParkingLot {
         List<List<String>> temporaryListOfDetailsOfBlueColoredToyotaCars = new ArrayList();
         temporaryListOfDetailsOfBlueColoredToyotaCars.add(new ArrayList(temporaryLot1));
         temporaryListOfDetailsOfBlueColoredToyotaCars.add(new ArrayList(temporaryLot2));
-        Vehicle vehicle4 = new Vehicle("Blue", "Toyota", "MH 46 KA 5421");
-        Vehicle vehicle5 = new Vehicle("White", "Scorpio", "MH 47 DE 4158");
+        Vehicle vehicle4 = new Vehicle("Blue", "Toyota", "MH 46 KA 5421", "Normal");
+        Vehicle vehicle5 = new Vehicle("White", "Scorpio", "MH 47 DE 4158", "Normal");
         parkingLotSystem = new ParkingLotSystem(5, 2);
         parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
         parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle1);
@@ -295,27 +298,27 @@ public class TestParkingLot {
     @Test
     public void givenMultipleVehiclesToPark_ShouldReturnLocationBMWCars() {
         List<String> temporaryLot1 = new ArrayList();
-        temporaryLot1.add("ParkingSlot Number is 0");
+        temporaryLot1.add("ParkingSlot Number is 0, Number Plate MH 43 AR 6451, Vehicle Name BMW, Color White");
         List<String> temporaryLot2 = new ArrayList();
-        temporaryLot2.add("ParkingSlot Number is 1");
+        temporaryLot2.add("ParkingSlot Number is 1, Number Plate MH 46 KA 5421, Vehicle Name BMW, Color Blue");
         List<List<String>> temporaryListOfLocationOfBMWCars = new ArrayList();
         temporaryListOfLocationOfBMWCars.add(new ArrayList(temporaryLot1));
         temporaryListOfLocationOfBMWCars.add(new ArrayList(temporaryLot2));
-        Vehicle vehicle4 = new Vehicle("Blue", "BMW", "MH 46 KA 5421");
-        Vehicle vehicle5 = new Vehicle("White", "Scorpio", "MH 47 DE 4158");
+        Vehicle vehicle4 = new Vehicle("Blue", "BMW", "MH 46 KA 5421", "Normal");
+        Vehicle vehicle5 = new Vehicle("White", "Scorpio", "MH 47 DE 4158", "Handicape");
         parkingLotSystem = new ParkingLotSystem(5, 2);
         parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
         parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle1);
         parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle2);
         parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle4);
         parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle5);
-        List<List<String>> overallListOfBMWCars = parkingLotSystem.getOverallListOfBMWCarsInDfferentLots("BMW");
+        List<List<String>> overallListOfBMWCars = parkingLotSystem.getOverallListOfCarsInDifferentLotsByFieldOfVehicle("BMW");
         Assert.assertEquals(temporaryListOfLocationOfBMWCars, overallListOfBMWCars);
     }
 
     @Test
     public void GivenMultipleVehiclesToPark_ShouldReturnListOfVehiclesParkedUnLastThirtyMinutes() {
-        Vehicle vehicle4 = new Vehicle("Blue", "BMW", "MH 46 KA 5421");
+        Vehicle vehicle4 = new Vehicle("Blue", "BMW", "MH 46 KA 5421", "Normal");
         List<Vehicle> temporaryLot1 = new ArrayList();
         temporaryLot1.add(vehicle);
         temporaryLot1.add(vehicle2);
@@ -348,8 +351,8 @@ public class TestParkingLot {
         parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle5);
         parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle6);
         parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle7);
-        List<List<String>> overallListOfBlueColoredToyotaCarsInDifferentLots = parkingLotSystem.getDetailsOfHandicapeDriverVehiclesInAllLots("Handicape");
-        Assert.assertEquals(temporaryLot1, overallListOfBlueColoredToyotaCarsInDifferentLots.get(0));
+        List<List<String>> overallListOFHandicapedDriversCarsInDifferentLots = parkingLotSystem.getOverallListOfCarsInDifferentLotsByFieldOfVehicle("Handicape");
+        Assert.assertEquals(temporaryLot1, overallListOFHandicapedDriversCarsInDifferentLots.get(0));
     }
 
     @Test

@@ -32,22 +32,16 @@ public class ParkingLotSystem {
         return lotOfParkedVehicle;
     }
 
-    public List<List<Integer>> getOverallLotOfWhiteColorVehicle(String color) {
-        List<List<Integer>> overallListOfWhiteVehicles = this.parkingLot.stream()
-                .map(parkingLot -> parkingLot.getListOfWhiteVehiclesInParticularLotByColor(color)).collect(Collectors.toList());
-        return overallListOfWhiteVehicles;
-    }
-
     public List<List<String>> getDetailsOfAllBlueToyotaCarsDifferentLotsByNameAndColor(String vehicleName, String color) {
         List<List<String>> overallListOfBlueColoredToyotaCarsInDifferentLots = this.parkingLot.stream()
                 .map(parkingLot -> parkingLot.getDetailsOfBlueToyotaCarsInParticularLotByNameAndColor(vehicleName, color)).collect(Collectors.toList());
         return overallListOfBlueColoredToyotaCarsInDifferentLots;
     }
 
-    public List<List<String>> getOverallListOfBMWCarsInDfferentLots(String vehicleName) {
-        List<List<String>> overallListOfBMWCars = this.parkingLot.stream()
-                .map(parkingLot -> parkingLot.getListOfBMWCarsInParticularLotByVehicleName(vehicleName)).collect(Collectors.toList());
-        return overallListOfBMWCars;
+    public List<List<String>> getOverallListOfCarsInDifferentLotsByFieldOfVehicle(String fieldOfVehicle) {
+        List<List<String>> overallListOfCarsByFieldOfVehicle = this.parkingLot.stream()
+                .map(parkingLot -> parkingLot.getDetailsOfCarsInParticularLotByFieldOfVehicle(fieldOfVehicle)).collect(Collectors.toList());
+        return overallListOfCarsByFieldOfVehicle;
     }
 
     public List<List<Vehicle>> getListOfAllCarsParkedInLastThirtyMinutesInAllLots() {
@@ -55,12 +49,6 @@ public class ParkingLotSystem {
                 .map(parkingLot -> parkingLot.getListOfAllCarsParkedInLastThirtyMinutesInParticularLot())
                 .collect(Collectors.toList());
         return listOfAllCarsParkedInLastThirtyMinutesInAllLots;
-    }
-
-    public List<List<String>> getDetailsOfHandicapeDriverVehiclesInAllLots(String driverType) {
-        List<List<String>> overallListOfHandicapeDriverVehiclesInAllLots = this.parkingLot.stream()
-                .map(parkingLot -> parkingLot.getDetailsOfHandicapeDriverVehicles(driverType)).collect(Collectors.toList());
-        return overallListOfHandicapeDriverVehiclesInAllLots;
     }
 
     public List<List<String>> getDetailsOfAllVehiclesInAllLots() {
