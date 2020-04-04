@@ -2,13 +2,13 @@ package com.parkinglot;
 
 import java.time.LocalDateTime;
 
-public class Slots {
+public class ParkingSlots {
 
     public Vehicle vehicle;
     private LocalDateTime time;
     private int slotNumber;
 
-    public Slots(int slotNumber) {
+    public ParkingSlots(int slotNumber) {
         this.slotNumber = slotNumber;
     }
 
@@ -25,7 +25,7 @@ public class Slots {
         return vehicle;
     }
 
-    public Integer getSlotNumber() {
+    public Integer getParkingSlotNumber() {
         return slotNumber;
     }
 }

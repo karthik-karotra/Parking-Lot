@@ -1,9 +1,7 @@
 /*package com.unittestingusingmockito;
 
-import com.parkinglot.DriverType;
-import com.parkinglot.ParkingLotOwner;
-import com.parkinglot.ParkingLot;
-import com.parkinglotexception.ParkingLotException;
+import com.parkinglot.ParkingLotOwner;*/
+/*
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,7 +16,7 @@ public class ParkingLotExceptionTest {
     @Mock
     ParkingLot parkingLot;
     ParkingLotOwner owner;
-    Object vehicle;
+    Vehicle vehicle;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -27,14 +25,15 @@ public class ParkingLotExceptionTest {
     public void setup() {
         parkingLot = mock(ParkingLot.class);
         owner = new ParkingLotOwner();
-        vehicle = new Object();
+        vehicle = new Vehicle();
     }
 
     @Test(expected = ParkingLotException.class)
     public void testParkingLotExceptionClass_ThrowParkingLotException_WhenCallingParkFunction() {
         doThrow(ParkingLotException.class)
-                .when(parkingLot).parkVehicle(any(), any(Object.class));
+                .when(parkingLot).parkVehicle(any(), any(Vehicle.class));
         parkingLot.parkVehicle(1, DriverType.NORMAL_DRIVER);
-    }*/
+    }
 
-//}
+}
+*/

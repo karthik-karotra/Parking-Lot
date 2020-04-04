@@ -1,5 +1,6 @@
-package com.parkinglot;
+package com.strategy;
 
+import com.parkinglot.ParkingLot;
 import java.util.List;
 
 public interface ParkingStrategy {

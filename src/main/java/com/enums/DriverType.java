@@ -1,4 +1,4 @@
-package com.parkinglot;
+package com.enums;
 
 public enum DriverType {
     HANDICAPE_DRIVER,

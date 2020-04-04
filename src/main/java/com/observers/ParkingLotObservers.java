@@ -1,7 +1,7 @@
-package com.parkinglot;
+package com.observers;
 
 public interface ParkingLotObservers {
     void slotsFull();
     void slotsEmpty();
-    boolean checkIfSlotIsFull();
+    boolean checkIfParkingSlotIsFull();
 }

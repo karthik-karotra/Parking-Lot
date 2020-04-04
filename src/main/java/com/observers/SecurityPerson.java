@@ -1,4 +1,4 @@
-package com.parkinglot;
+package com.observers;
 
 public class SecurityPerson implements ParkingLotObservers {
 
@@ -15,7 +15,7 @@ public class SecurityPerson implements ParkingLotObservers {
     }
 
     @Override
-    public boolean checkIfSlotIsFull() {
+    public boolean checkIfParkingSlotIsFull() {
         return slotsFull;
     }
 }

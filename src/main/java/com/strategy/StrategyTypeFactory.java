@@ -1,7 +1,9 @@
-package com.parkinglot;
+package com.strategy;
+
+import com.enums.DriverType;
+import com.enums.VehicleType;
 
 public class StrategyTypeFactory {
-
     public ParkingStrategy getParkingStrategy(Enum strategyType) {
         if (strategyType.equals(DriverType.NORMAL_DRIVER))
             return new NormalDriver();

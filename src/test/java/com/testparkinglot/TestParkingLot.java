@@ -1,5 +1,10 @@
 package com.testparkinglot;
 
+import com.enums.DriverType;
+import com.enums.VehicleType;
+import com.observers.ParkingLotObservers;
+import com.observers.ParkingLotOwner;
+import com.observers.SecurityPerson;
 import com.parkinglot.*;
 import com.parkinglotexception.ParkingLotException.ExceptionType;
 import com.parkinglotexception.ParkingLotException;
@@ -70,8 +75,8 @@ public class TestParkingLot {
     @Test
     public void givenAParkingLot_WhenFull_ShouldThrowException() {
         try {
-            parkingLot.setTotalSlotCapacity(1);
-            parkingLot.initializingSlots();
+            parkingLot.setTotalParkingSlotCapacity(1);
+            parkingLot.initializingParkingSlots();
             parkingLot.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
             parkingLot.parkVehicle(DriverType.NORMAL_DRIVER, vehicle1);
             parkingLot.checkIfVehicleIsParked(vehicle1);
@@ -88,8 +93,8 @@ public class TestParkingLot {
             parkingLot.parkVehicle(DriverType.NORMAL_DRIVER, vehicle1);
             parkingLot.checkIfVehicleIsParked(vehicle1);
         } catch (ParkingLotException ex) {
-            boolean checkIfSlotIsFull = parkingLotOwner.checkIfSlotIsFull();
-            Assert.assertTrue(checkIfSlotIsFull);
+            boolean checkIfParkingSlotIsFull = parkingLotOwner.checkIfParkingSlotIsFull();
+            Assert.assertTrue(checkIfParkingSlotIsFull);
         }
     }
 
@@ -101,8 +106,8 @@ public class TestParkingLot {
             parkingLot.parkVehicle(DriverType.NORMAL_DRIVER, vehicle1);
             parkingLot.checkIfVehicleIsParked(vehicle1);
         } catch (ParkingLotException ex) {
-            boolean checkIfSlotIsFull = securityPerson.checkIfSlotIsFull();
-            Assert.assertTrue(checkIfSlotIsFull);
+            boolean checkIfParkingSlotIsFull = securityPerson.checkIfParkingSlotIsFull();
+            Assert.assertTrue(checkIfParkingSlotIsFull);
         }
     }
 
@@ -112,7 +117,7 @@ public class TestParkingLot {
         parkingLot.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
         parkingLot.unparkVehicle(vehicle);
         parkingLot.checkIfVehicleIsUnParked(vehicle);
-        Assert.assertFalse(parkingLotOwner.checkIfSlotIsFull());
+        Assert.assertFalse(parkingLotOwner.checkIfParkingSlotIsFull());
     }
 
     @Test
@@ -121,13 +126,13 @@ public class TestParkingLot {
         parkingLot.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
         parkingLot.unparkVehicle(vehicle);
         parkingLot.checkIfVehicleIsUnParked(vehicle);
-        Assert.assertFalse(securityPerson.checkIfSlotIsFull());
+        Assert.assertFalse(securityPerson.checkIfParkingSlotIsFull());
     }
 
     @Test
     public void givenAParkingLot_WhenGivenMultipleVehiclesToPark_MoreThanItsCapacity_ShouldThrowException() {
-        parkingLot.setTotalSlotCapacity(2);
-        parkingLot.initializingSlots();
+        parkingLot.setTotalParkingSlotCapacity(2);
+        parkingLot.initializingParkingSlots();
         Vehicle vehicle3 = new Vehicle("White");
         try {
             parkingLot.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
@@ -140,42 +145,42 @@ public class TestParkingLot {
     }
 
     @Test
-    public void givenAnEmptyParkingLot_WillReturnListOfAvailableSlots() {
-        List<Integer> expectedEmptySlotList = new ArrayList<>();
-        expectedEmptySlotList.add(0);
-        expectedEmptySlotList.add(1);
-        parkingLot.setTotalSlotCapacity(2);
-        parkingLot.initializingSlots();
-        List<Integer> availableEmptySlotList = parkingLot.getAvailableEmptySlots();
-        Assert.assertEquals(expectedEmptySlotList, availableEmptySlotList);
+    public void givenAnEmptyParkingLot_WillReturnListOfAvailableParkingSlots() {
+        List<Integer> expectedEmptyParkingSlotList = new ArrayList<>();
+        expectedEmptyParkingSlotList.add(0);
+        expectedEmptyParkingSlotList.add(1);
+        parkingLot.setTotalParkingSlotCapacity(2);
+        parkingLot.initializingParkingSlots();
+        List<Integer> availableEmptyParkingSlotList = parkingLot.getAvailableEmptyParkingSlots();
+        Assert.assertEquals(expectedEmptyParkingSlotList, availableEmptyParkingSlotList);
     }
 
     @Test
-    public void givenAParkingLot_PartiallyOccupied_AttendantWillParkTheVehicleInTheAvailableEmptySlot() {
-        parkingLot.setTotalSlotCapacity(2);
-        parkingLot.initializingSlots();
-        List<Integer> availableEmptySlotList = parkingLot.getAvailableEmptySlots();
-        parkingLot.parkVehicle(availableEmptySlotList.get(0), vehicle);
+    public void givenAParkingLot_PartiallyOccupied_AttendantWillParkTheVehicleInTheAvailableEmptyParkingSlot() {
+        parkingLot.setTotalParkingSlotCapacity(2);
+        parkingLot.initializingParkingSlots();
+        List<Integer> availableEmptyParkingSlotList = parkingLot.getAvailableEmptyParkingSlots();
+        parkingLot.parkVehicle(availableEmptyParkingSlotList.get(0), vehicle);
         boolean checkIfVehicleIsParked = parkingLot.checkIfVehicleIsParked(vehicle);
         Assert.assertTrue(checkIfVehicleIsParked);
     }
 
     @Test
-    public void givenAParkingLot_DriverWantsToFindHisVehicle_IfFound_ShouldReturnCorrectParkedSlot() {
-        parkingLot.setTotalSlotCapacity(2);
-        parkingLot.initializingSlots();
-        List<Integer> availableEmptySlotList = parkingLot.getAvailableEmptySlots();
-        parkingLot.parkVehicle(availableEmptySlotList.get(0), vehicle);
+    public void givenAParkingLot_DriverWantsToFindHisVehicle_IfFound_ShouldReturnCorrectParkedParkingSlot() {
+        parkingLot.setTotalParkingSlotCapacity(2);
+        parkingLot.initializingParkingSlots();
+        List<Integer> availableEmptyParkingSlotList = parkingLot.getAvailableEmptyParkingSlots();
+        parkingLot.parkVehicle(availableEmptyParkingSlotList.get(0), vehicle);
         int slotPositionOfParkedVehicle = parkingLot.findVehicle(vehicle);
         Assert.assertEquals(0, slotPositionOfParkedVehicle);
     }
 
     @Test
     public void givenAParkingLot_DriverWantToFindHisVehicle_IfNotFound_ShouldThrowException() {
-        parkingLot.setTotalSlotCapacity(2);
-        parkingLot.initializingSlots();
+        parkingLot.setTotalParkingSlotCapacity(2);
+        parkingLot.initializingParkingSlots();
         try {
-            parkingLot.getAvailableEmptySlots();
+            parkingLot.getAvailableEmptyParkingSlots();
             parkingLot.findVehicle(vehicle);
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.VEHICLE_NOT_FOUND, e.type);
@@ -269,9 +274,9 @@ public class TestParkingLot {
     @Test
     public void givenMultipleVehiclesToPark_ShouldReturnDetailsOfBlueColoredToyotaVehicles() {
         List<String> temporaryLot1 = new ArrayList();
-        temporaryLot1.add("Slot Number is 1Number Plate MH 43 AR 6210");
+        temporaryLot1.add("ParkingSlot Number is 1Number Plate MH 43 AR 6210");
         List<String> temporaryLot2 = new ArrayList();
-        temporaryLot2.add("Slot Number is 1Number Plate MH 46 KA 5421");
+        temporaryLot2.add("ParkingSlot Number is 1Number Plate MH 46 KA 5421");
         List<List<String>> temporaryListOfDetailsOfBlueColoredToyotaCars = new ArrayList();
         temporaryListOfDetailsOfBlueColoredToyotaCars.add(new ArrayList(temporaryLot1));
         temporaryListOfDetailsOfBlueColoredToyotaCars.add(new ArrayList(temporaryLot2));
@@ -290,9 +295,9 @@ public class TestParkingLot {
     @Test
     public void givenMultipleVehiclesToPark_ShouldReturnLocationBMWCars() {
         List<String> temporaryLot1 = new ArrayList();
-        temporaryLot1.add("Slot Number is 0");
+        temporaryLot1.add("ParkingSlot Number is 0");
         List<String> temporaryLot2 = new ArrayList();
-        temporaryLot2.add("Slot Number is 1");
+        temporaryLot2.add("ParkingSlot Number is 1");
         List<List<String>> temporaryListOfLocationOfBMWCars = new ArrayList();
         temporaryListOfLocationOfBMWCars.add(new ArrayList(temporaryLot1));
         temporaryListOfLocationOfBMWCars.add(new ArrayList(temporaryLot2));
@@ -332,8 +337,8 @@ public class TestParkingLot {
     @Test
     public void givenMultipleHandicapeDriversCars_ShouldReturnInformationOfCars() {
         List<String> temporaryLot1 = new ArrayList();
-        temporaryLot1.add("Slot Number is 1, Number Plate MH 47 DE 4158, Vehicle Name Scorpio, Color White");
-        temporaryLot1.add("Slot Number is 2, Number Plate MH 49 DY 8458, Vehicle Name Scorpio, Color White");
+        temporaryLot1.add("ParkingSlot Number is 1, Number Plate MH 47 DE 4158, Vehicle Name Scorpio, Color White");
+        temporaryLot1.add("ParkingSlot Number is 2, Number Plate MH 49 DY 8458, Vehicle Name Scorpio, Color White");
         Vehicle vehicle4 = new Vehicle("Blue", "Toyota", "MH 46 KA 5421", "Normal");
         Vehicle vehicle5 = new Vehicle("White", "Scorpio", "MH 47 DE 4158", "Handicape");
         Vehicle vehicle6 = new Vehicle("Red", "Toyoya", "MH 43 HE 4858", "Normal");
@@ -350,11 +355,11 @@ public class TestParkingLot {
     @Test
     public void givenMultipleCarsToPark_ShouldReturnInformationOfAllCars() {
         List<String> temporaryLot1 = new ArrayList();
-        temporaryLot1.add("Slot Number is 0, Number Plate MH 46 KA 5421, Vehicle Name Toyota, Color Blue, Driver Type Normal");
-        temporaryLot1.add("Slot Number is 1, Number Plate MH 47 DE 4158, Vehicle Name Scorpio, Color White, Driver Type Handicape");
-        temporaryLot1.add("Slot Number is 2, Number Plate MH 49 DY 8458, Vehicle Name Scorpio, Color White, Driver Type Handicape");
+        temporaryLot1.add("ParkingSlot Number is 0, Number Plate MH 46 KA 5421, Vehicle Name Toyota, Color Blue, Driver Type Normal");
+        temporaryLot1.add("ParkingSlot Number is 1, Number Plate MH 47 DE 4158, Vehicle Name Scorpio, Color White, Driver Type Handicape");
+        temporaryLot1.add("ParkingSlot Number is 2, Number Plate MH 49 DY 8458, Vehicle Name Scorpio, Color White, Driver Type Handicape");
         List<String> temporaryLot2 = new ArrayList();
-        temporaryLot2.add("Slot Number is 0, Number Plate MH 43 HE 4858, Vehicle Name Toyoya, Color Red, Driver Type Normal");
+        temporaryLot2.add("ParkingSlot Number is 0, Number Plate MH 43 HE 4858, Vehicle Name Toyoya, Color Red, Driver Type Normal");
         List<List<String>> temporaryListOfDetailsOfAllCars = new ArrayList();
         temporaryListOfDetailsOfAllCars.add(new ArrayList(temporaryLot1));
         temporaryListOfDetailsOfAllCars.add(new ArrayList(temporaryLot2));
