@@ -54,6 +54,16 @@ public class TestParkingLot {
     }
 
     @Test
+    public void givenANullVehicle_WantsToParkButCouldNotPark_ShouldThrowException() {
+        try {
+            parkingLot.parkVehicle(DriverType.NORMAL_DRIVER, null);
+            boolean checkIfVehicleIsParked = parkingLot.checkIfVehicleIsParked(null);
+        } catch (ParkingLotException ex) {
+            Assert.assertEquals(ParkingLotException.ExceptionType.VEHICLE_NOT_PARKED, ex.type);
+        }
+    }
+
+    @Test
     public void givenInitiallyAParkedVehicle_WantsToUnPark_ShouldReturnTrue() {
         parkingLot.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
         parkingLot.unparkVehicle(vehicle);
@@ -62,13 +72,23 @@ public class TestParkingLot {
     }
 
     @Test
-    public void givenAVehicle_WantsToUnparkButCouldNotUnpark_ShouldThrowException() {
+    public void givenAParkedVehicle_WantsToCheckWheterUnparked_ShouldThrowException() {
         try {
             parkingLot.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
-            parkingLot.unparkVehicle(vehicle1);
             boolean checkIfVehicleIsUnParked = parkingLot.checkIfVehicleIsUnParked(vehicle);
         } catch (ParkingLotException ex) {
             Assert.assertEquals(ParkingLotException.ExceptionType.VEHICLE_NOT_UNPARKED, ex.type);
+        }
+    }
+
+    @Test
+    public void givenAVehicle_WantsToUnparked_ButVehicleNotFound_ShouldThrowException() {
+        try {
+            parkingLot.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
+             parkingLot.unparkVehicle(vehicle1);
+            boolean checkIfVehicleIsUnParked = parkingLot.checkIfVehicleIsUnParked(vehicle);
+        } catch (ParkingLotException ex) {
+            Assert.assertEquals(ExceptionType.VEHICLE_NOT_FOUND, ex.type);
         }
     }
 

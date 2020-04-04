@@ -60,7 +60,7 @@ public class ParkingLot {
 
     public void unparkVehicle(Vehicle vehicle) {
         ParkingSlots slots = this.slots.stream().filter(slot -> vehicle.equals(slot.getVehicle())).findFirst()
-                .orElseThrow(() -> new ParkingLotException("Vehicle not found", ExceptionType.VEHICLE_NOT_UNPARKED));
+                .orElseThrow(() -> new ParkingLotException("Vehicle not found", ExceptionType.VEHICLE_NOT_FOUND));
         slots.setParkingTimeOfVehicle(null);
         for (ParkingLotObservers observer : observersList)
             observer.slotsEmpty();
@@ -71,7 +71,7 @@ public class ParkingLot {
         boolean isPresent = this.slots.stream().filter(slot -> slot.getVehicle() == (vehicle)).findFirst().isPresent();
         if (!isPresent)
             return true;
-        throw new ParkingLotException("Vehicle not unparked", ExceptionType.VEHICLE_NOT_FOUND);
+        throw new ParkingLotException("Vehicle not unparked", ExceptionType.VEHICLE_NOT_UNPARKED);
     }
 
     public void registerObserver(ParkingLotObservers observer) {
