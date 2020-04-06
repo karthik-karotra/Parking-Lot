@@ -1,7 +1,7 @@
 package com.unittestingusingmockito;
 
-import com.observers.ParkingLotObservers;
-import com.parkinglot.ParkingLot;
+import com.observers.ParkingLotInformer;
+import com.observers.SecurityPerson;
 import com.parkinglot.Vehicle;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,49 +16,44 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 
 public class SecurityPersonMockitoTest {
+
     @Mock
-    ParkingLotObservers securityPerson;
+    ParkingLotInformer parkingLotInformer;
+    SecurityPerson securityPerson;
     Vehicle vehicle;
-    ParkingLot parkingLot;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Before
     public void setup() {
-        securityPerson = mock(ParkingLotObservers.class);
-        vehicle = new Vehicle("Red");
+        parkingLotInformer = mock(ParkingLotInformer.class);
+        securityPerson = new SecurityPerson();
+        vehicle = new Vehicle("");
     }
 
     @Test
-    public void testingParkingSlotFullForSecurityPerson() {
-        try {
-            parkingLot.registerObserver(securityPerson);
-            doAnswer((Answer<Void>) invocationOnMock -> {
-                securityPerson.checkIfParkingSlotIsFull();
-                return null;
-            }).when(securityPerson).slotsFull();
+    public void testingSlotsFullAndCheckIfParkingSlotIsFullFunction_ForSecurityPerson_WhenLotIsFull() {
+        parkingLotInformer.registerObserver(securityPerson);
+        doAnswer((Answer<Void>) invocationOnMock -> {
             securityPerson.slotsFull();
-            assertTrue(securityPerson.checkIfParkingSlotIsFull());
-        } catch (NullPointerException ex) {
-            ex.getMessage();
-        }
+            return null;
+        }).when(parkingLotInformer).notifyParkingFull();
+        parkingLotInformer.notifyParkingFull();
+        assertTrue(securityPerson.checkIfParkingSlotIsFull());
     }
 
     @Test
-    public void testingParkingSlotEmptyForSecurityPerson() {
-        try {
-            parkingLot.registerObserver(securityPerson);
-            doAnswer((Answer<Void>) invocationOnMock -> {
-                securityPerson.checkIfParkingSlotIsFull();
-                return null;
-            }).when(securityPerson).slotsEmpty();
+    public void testingSlotsEmptyAndCheckIfParkingSlotIsFullFunction_ForSecurtiyPerson_WhenLotIsEmpty() {
+        parkingLotInformer.registerObserver(securityPerson);
+        doAnswer((Answer<Void>) invocationOnMock -> {
             securityPerson.slotsEmpty();
-            assertFalse(securityPerson.checkIfParkingSlotIsFull());
-        } catch (NullPointerException ex) {
-            ex.getMessage();
-        }
+            return null;
+        }).when(parkingLotInformer).notifyParkingAvailable();
+        parkingLotInformer.notifyParkingAvailable();
+        assertFalse(securityPerson.checkIfParkingSlotIsFull());
     }
+
 }
 
 

@@ -85,7 +85,7 @@ public class TestParkingLot {
     public void givenAVehicle_WantsToUnparked_ButVehicleNotFound_ShouldThrowException() {
         try {
             parkingLot.parkVehicle(DriverType.NORMAL_DRIVER, vehicle);
-             parkingLot.unparkVehicle(vehicle1);
+            parkingLot.unparkVehicle(vehicle1);
             boolean checkIfVehicleIsUnParked = parkingLot.checkIfVehicleIsUnParked(vehicle);
         } catch (ParkingLotException ex) {
             Assert.assertEquals(ExceptionType.VEHICLE_NOT_FOUND, ex.type);
@@ -295,6 +295,26 @@ public class TestParkingLot {
     }
 
     @Test
+    public void givenMultipleVehiclesToPark_WantsToGetListOfWhiteVehicles_WhenVehiclesNotFound_ShouldThrowException() {
+        try {
+            Vehicle vehicle4 = new Vehicle("Red", "Toyota", "MH 46 KA 5421", "Normal");
+            Vehicle vehicle5 = new Vehicle("Red", "Scorpio", "MH 47 DE 4158", "Normal");
+            Vehicle vehicle6 = new Vehicle("Red", "Toyoya", "MH 43 HE 4858", "Normal");
+            Vehicle vehicle7 = new Vehicle("Red", "Scorpio", "MH 49 DY 8458", "Normal");
+            Vehicle vehicle8 = new Vehicle("Red", "Scorpio", "MH 49 DY 8458", "Handicape");
+            parkingLotSystem = new ParkingLotSystem(5, 2);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle4);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle5);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle6);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle7);
+            parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle8);
+            List<List<String>> overallListOfWhiteVehicles = parkingLotSystem.getOverallListOfCarsInDifferentLotsByFieldOfVehicle("White");
+        } catch (ParkingLotException ex) {
+            Assert.assertEquals(ExceptionType.VEHICLE_NOT_FOUND, ex.type);
+        }
+    }
+
+    @Test
     public void givenMultipleVehiclesToPark_ShouldReturnDetailsOfBlueColoredToyotaVehicles() {
         List<String> temporaryLot1 = new ArrayList();
         temporaryLot1.add("ParkingSlot Number is 1Number Plate MH 43 AR 6210");
@@ -316,6 +336,26 @@ public class TestParkingLot {
     }
 
     @Test
+    public void givenMultipleVehiclesToPark_WantsToGetListOfBlueColoredToyotaVehicles_WhenVehiclesNotFound_ShouldThrowException() {
+        try {
+            Vehicle vehicle4 = new Vehicle("Red", "Toyota", "MH 46 KA 5421", "Normal");
+            Vehicle vehicle5 = new Vehicle("Red", "Scorpio", "MH 47 DE 4158", "Normal");
+            Vehicle vehicle6 = new Vehicle("Red", "Toyoya", "MH 43 HE 4858", "Normal");
+            Vehicle vehicle7 = new Vehicle("Red", "Scorpio", "MH 49 DY 8458", "Normal");
+            Vehicle vehicle8 = new Vehicle("Red", "Scorpio", "MH 49 DY 8458", "Handicape");
+            parkingLotSystem = new ParkingLotSystem(5, 2);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle4);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle5);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle6);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle7);
+            parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle8);
+            List<List<String>> overallListOfWhiteVehicles = parkingLotSystem.getDetailsOfAllBlueToyotaCarsDifferentLotsByNameAndColor("Toyota", "Blue");
+        } catch (ParkingLotException ex) {
+            Assert.assertEquals(ExceptionType.VEHICLE_NOT_FOUND, ex.type);
+        }
+    }
+
+    @Test
     public void givenMultipleVehiclesToPark_ShouldReturnLocationBMWCars() {
         List<String> temporaryLot1 = new ArrayList();
         temporaryLot1.add("ParkingSlot Number is 0, Number Plate MH 43 AR 6451, Vehicle Name BMW, Color White");
@@ -334,6 +374,26 @@ public class TestParkingLot {
         parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle5);
         List<List<String>> overallListOfBMWCars = parkingLotSystem.getOverallListOfCarsInDifferentLotsByFieldOfVehicle("BMW");
         Assert.assertEquals(temporaryListOfLocationOfBMWCars, overallListOfBMWCars);
+    }
+
+    @Test
+    public void givenMultipleVehiclesToPark_WantsToGetListOfBMWVehicles_WhenVehiclesNotFound_ShouldThrowException() {
+        try {
+            Vehicle vehicle4 = new Vehicle("Red", "Toyota", "MH 46 KA 5421", "Normal");
+            Vehicle vehicle5 = new Vehicle("Red", "Scorpio", "MH 47 DE 4158", "Normal");
+            Vehicle vehicle6 = new Vehicle("Red", "Toyoya", "MH 43 HE 4858", "Normal");
+            Vehicle vehicle7 = new Vehicle("Red", "Scorpio", "MH 49 DY 8458", "Normal");
+            Vehicle vehicle8 = new Vehicle("Red", "Scorpio", "MH 49 DY 8458", "Handicape");
+            parkingLotSystem = new ParkingLotSystem(5, 2);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle4);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle5);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle6);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle7);
+            parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle8);
+            List<List<String>> overallListOfWhiteVehicles = parkingLotSystem.getOverallListOfCarsInDifferentLotsByFieldOfVehicle("BMW");
+        } catch (ParkingLotException ex) {
+            Assert.assertEquals(ExceptionType.VEHICLE_NOT_FOUND, ex.type);
+        }
     }
 
     @Test
@@ -376,6 +436,26 @@ public class TestParkingLot {
     }
 
     @Test
+    public void givenMultipleVehiclesToPark_WantsToGetListOfHandicapeDriversVehicles_WhenVehiclesNotFound_ShouldThrowException() {
+        try {
+            Vehicle vehicle4 = new Vehicle("Red", "Toyota", "MH 46 KA 5421", "Normal");
+            Vehicle vehicle5 = new Vehicle("Red", "Scorpio", "MH 47 DE 4158", "Normal");
+            Vehicle vehicle6 = new Vehicle("Red", "Toyoya", "MH 43 HE 4858", "Normal");
+            Vehicle vehicle7 = new Vehicle("Red", "Scorpio", "MH 49 DY 8458", "Normal");
+            Vehicle vehicle8 = new Vehicle("Red", "Scorpio", "MH 49 DY 8458", "Normal");
+            parkingLotSystem = new ParkingLotSystem(5, 2);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle4);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle5);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle6);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle7);
+            parkingLotSystem.parkVehicle(DriverType.NORMAL_DRIVER, vehicle8);
+            List<List<String>> overallListOfWhiteVehicles = parkingLotSystem.getOverallListOfCarsInDifferentLotsByFieldOfVehicle("Handicape");
+        } catch (ParkingLotException ex) {
+            Assert.assertEquals(ExceptionType.VEHICLE_NOT_FOUND, ex.type);
+        }
+    }
+
+    @Test
     public void givenMultipleCarsToPark_ShouldReturnInformationOfAllCars() {
         List<String> temporaryLot1 = new ArrayList();
         temporaryLot1.add("ParkingSlot Number is 0, Number Plate MH 46 KA 5421, Vehicle Name Toyota, Color Blue, Driver Type Normal");
@@ -397,5 +477,14 @@ public class TestParkingLot {
         parkingLotSystem.parkVehicle(DriverType.HANDICAPE_DRIVER, vehicle7);
         List<List<String>> overallListOfBlueColoredToyotaCarsInDifferentLots = parkingLotSystem.getDetailsOfAllVehiclesInAllLots();
         Assert.assertEquals(temporaryListOfDetailsOfAllCars, overallListOfBlueColoredToyotaCarsInDifferentLots);
+    }
+
+    @Test
+    public void givenMultipleVehiclesToPark_WantsToGetListOfAllVehicles_WhenVehiclesNotFound_ShouldThrowException() {
+        try {
+            List<List<String>> overallListOfWhiteVehicles = parkingLotSystem.getDetailsOfAllVehiclesInAllLots();
+        } catch (ParkingLotException ex) {
+            Assert.assertEquals(ExceptionType.VEHICLE_NOT_FOUND, ex.type);
+        }
     }
 }

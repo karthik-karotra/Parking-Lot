@@ -1,6 +1,7 @@
 package com.parkinglot;
 
 import com.enums.VehicleType;
+import com.observers.ParkingLotInformer;
 import com.observers.ParkingLotObservers;
 import com.parkinglotexception.ParkingLotException;
 import static com.parkinglotexception.ParkingLotException.ExceptionType;
@@ -15,12 +16,14 @@ public class ParkingLot {
     private Integer totalParkingSlotCapacity;
     private List<ParkingLotObservers> observersList;
     private List<ParkingSlots> slots;
+    ParkingLotInformer parkingLotInformer;
     private Integer noOfVehicles = 0;
 
     public ParkingLot(Integer slotCapacity) {
         this.totalParkingSlotCapacity = slotCapacity;
         this.observersList = new ArrayList();
         this.slots = new ArrayList();
+        parkingLotInformer = ParkingLotInformer.getObjectOfParkingLotInformer();
         this.initializingParkingSlots();
     }
 
@@ -32,12 +35,10 @@ public class ParkingLot {
         List<Integer> availableEmptyParkingSlots = getAvailableEmptyParkingSlots();
         if (availableEmptyParkingSlots.size() == 0)
             throw new ParkingLotException("ParkingSlots full", ExceptionType.SLOT_FULL);
-        else if (strategyType.equals(VehicleType.LARGE_VEHICLE)) {
-            if (availableEmptyParkingSlots.size() > 2) {
-                this.slots.get(availableEmptyParkingSlots.get(1)).setParkingTimeOfVehicle(vehicle);
-                noOfVehicles++;
-                return true;
-            }
+        else if (strategyType.equals(VehicleType.LARGE_VEHICLE) && availableEmptyParkingSlots.size() > 2) {
+            this.slots.get(availableEmptyParkingSlots.get(1)).setParkingTimeOfVehicle(vehicle);
+            noOfVehicles++;
+            return true;
         }
         this.slots.get(availableEmptyParkingSlots.get(0)).setParkingTimeOfVehicle(vehicle);
         noOfVehicles++;
@@ -62,8 +63,7 @@ public class ParkingLot {
         ParkingSlots slots = this.slots.stream().filter(slot -> vehicle.equals(slot.getVehicle())).findFirst()
                 .orElseThrow(() -> new ParkingLotException("Vehicle not found", ExceptionType.VEHICLE_NOT_FOUND));
         slots.setParkingTimeOfVehicle(null);
-        for (ParkingLotObservers observer : observersList)
-            observer.slotsEmpty();
+        parkingLotInformer.notifyParkingAvailable();
         noOfVehicles--;
     }
 
@@ -75,7 +75,7 @@ public class ParkingLot {
     }
 
     public void registerObserver(ParkingLotObservers observer) {
-        observersList.add(observer);
+        parkingLotInformer.registerObserver(observer);
     }
 
     public void setTotalParkingSlotCapacity(int totalParkingSlotCapacity) {
@@ -89,8 +89,7 @@ public class ParkingLot {
                     .filter(slotIndex -> this.slots.get(slotIndex).getVehicle() == null)
                     .forEach(slotIndex -> unOccupiedParkingSlotList.add(slotIndex));
             if (unOccupiedParkingSlotList.size() == 0) {
-                for (ParkingLotObservers observer : observersList)
-                    observer.slotsFull();
+                parkingLotInformer.notifyParkingFull();
                 throw new ParkingLotException("ParkingSlots are full", ExceptionType.LOTS_FULL);
             }
         } catch (ParkingLotException e) {

@@ -1,7 +1,7 @@
 package com.unittestingusingmockito;
 
-import com.observers.ParkingLotObservers;
-import com.parkinglot.ParkingLot;
+import com.observers.ParkingLotInformer;
+import com.observers.ParkingLotOwner;
 import com.parkinglot.Vehicle;
 import org.junit.Before;
 import org.junit.Rule;
@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.mockito.stubbing.Answer;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doAnswer;
@@ -18,47 +19,40 @@ import static org.mockito.Mockito.mock;
 public class ParkingLotOwnerMockitoTest {
 
     @Mock
-    ParkingLotObservers owner;
+    ParkingLotInformer parkingLotInformer;
+    ParkingLotOwner parkingLotOwner;
     Vehicle vehicle;
-    ParkingLot parkingLot;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Before
     public void setup() {
-        owner = mock(ParkingLotObservers.class);
+        parkingLotInformer = mock(ParkingLotInformer.class);
+        parkingLotOwner = new ParkingLotOwner();
         vehicle = new Vehicle("");
     }
 
     @Test
-    public void testingParkingSlotFullForOwner() {
-        try {
-            parkingLot.registerObserver(owner);
-            doAnswer((Answer<Void>) invocationOnMock -> {
-                owner.slotsFull();
-                return null;
-            }).when(owner).checkIfParkingSlotIsFull();
-            owner.slotsFull();
-            assertTrue(owner.checkIfParkingSlotIsFull());
-        } catch (NullPointerException ex) {
-            ex.getMessage();
-        }
+    public void testingSlotsFullAndCheckIfParkingSlotIsFullFunction_ForParkingLotOwner_WhenLotIsFull() {
+        parkingLotInformer.registerObserver(parkingLotOwner);
+        doAnswer((Answer<Void>) invocationOnMock -> {
+            parkingLotOwner.slotsFull();
+            return null;
+        }).when(parkingLotInformer).notifyParkingFull();
+        parkingLotInformer.notifyParkingFull();
+        assertTrue(parkingLotOwner.checkIfParkingSlotIsFull());
     }
 
     @Test
-    public void testingParkingSlotEmptyForOwner() {
-        try {
-            parkingLot.registerObserver(owner);
-            doAnswer((Answer<Void>) invocationOnMock -> {
-                owner.slotsEmpty();
-                return null;
-            }).when(owner).checkIfParkingSlotIsFull();
-            owner.slotsEmpty();
-            assertFalse(owner.checkIfParkingSlotIsFull());
-        } catch (NullPointerException ex) {
-            ex.getMessage();
-        }
+    public void testingSlotsEmptyAndCheckIfParkingSlotIsFullFunction_ForParkingLotOwner_WhenLotIsEmpty() {
+        parkingLotInformer.registerObserver(parkingLotOwner);
+        doAnswer((Answer<Void>) invocationOnMock -> {
+            parkingLotOwner.slotsEmpty();
+            return null;
+        }).when(parkingLotInformer).notifyParkingAvailable();
+        parkingLotInformer.notifyParkingAvailable();
+        assertFalse(parkingLotOwner.checkIfParkingSlotIsFull());
     }
 }
 

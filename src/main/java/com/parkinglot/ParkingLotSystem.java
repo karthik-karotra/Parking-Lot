@@ -1,5 +1,6 @@
 package com.parkinglot;
 
+import com.parkinglotexception.ParkingLotException;
 import com.strategy.StrategyTypeFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,20 +28,26 @@ public class ParkingLotSystem {
     }
 
     public ParkingLot getLotOfParkedVehicle(Vehicle vehicle) {
-        ParkingLot lotOfParkedVehicle = this.parkingLot.stream().filter(lot -> lot.checkIfVehicleIsParked(vehicle)).findFirst()
+        ParkingLot lotOfParkedVehicle = this.parkingLot.stream()
+                .filter(lot -> lot.checkIfVehicleIsParked(vehicle))
+                .findFirst()
                 .orElse(null);
         return lotOfParkedVehicle;
     }
 
     public List<List<String>> getDetailsOfAllBlueToyotaCarsDifferentLotsByNameAndColor(String vehicleName, String color) {
         List<List<String>> overallListOfBlueColoredToyotaCarsInDifferentLots = this.parkingLot.stream()
-                .map(parkingLot -> parkingLot.getDetailsOfBlueToyotaCarsInParticularLotByNameAndColor(vehicleName, color)).collect(Collectors.toList());
+                .map(parkingLot -> parkingLot.getDetailsOfBlueToyotaCarsInParticularLotByNameAndColor(vehicleName, color))
+                .collect(Collectors.toList());
+        this.throwExceptionIfVehiclesNotPresent(overallListOfBlueColoredToyotaCarsInDifferentLots);
         return overallListOfBlueColoredToyotaCarsInDifferentLots;
     }
 
     public List<List<String>> getOverallListOfCarsInDifferentLotsByFieldOfVehicle(String fieldOfVehicle) {
         List<List<String>> overallListOfCarsByFieldOfVehicle = this.parkingLot.stream()
-                .map(parkingLot -> parkingLot.getDetailsOfCarsInParticularLotByFieldOfVehicle(fieldOfVehicle)).collect(Collectors.toList());
+                .map(parkingLot -> parkingLot.getDetailsOfCarsInParticularLotByFieldOfVehicle(fieldOfVehicle))
+                .collect(Collectors.toList());
+        this.throwExceptionIfVehiclesNotPresent(overallListOfCarsByFieldOfVehicle);
         return overallListOfCarsByFieldOfVehicle;
     }
 
@@ -53,7 +60,19 @@ public class ParkingLotSystem {
 
     public List<List<String>> getDetailsOfAllVehiclesInAllLots() {
         List<List<String>> overallListOfAllVehiclesInAllLots = this.parkingLot.stream()
-                .map(parkingLot -> parkingLot.getDetailsOfAllCarsInParticularLot()).collect(Collectors.toList());
+                .map(parkingLot -> parkingLot.getDetailsOfAllCarsInParticularLot())
+                .collect(Collectors.toList());
+        this.throwExceptionIfVehiclesNotPresent(overallListOfAllVehiclesInAllLots);
         return overallListOfAllVehiclesInAllLots;
+    }
+
+    public void throwExceptionIfVehiclesNotPresent(List<List<String>> list) {
+        Integer count = 0;
+        for (List<String> lot : list) {
+            if (lot.size() == 0)
+                count++;
+        }
+        if (count == list.size())
+            throw new ParkingLotException("Not found", ParkingLotException.ExceptionType.VEHICLE_NOT_FOUND);
     }
 }
